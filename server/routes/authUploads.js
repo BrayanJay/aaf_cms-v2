@@ -111,27 +111,33 @@ router.delete("/delete/:filename", verifyToken, async (req, res) => {
     }
   });
 
-// Fetch product details by product_name and language
+// Website API - Fetch Product Pages' Contents to the Frontend
+const allowedProducts = ['gold_loan', 'fixed_deposits', 'mortgage', 'leasing', 'luckewallet', 'forex']; // List of valid products
+
 router.get("/product/:product_name/:lang", async (req, res) => {
   const { product_name, lang } = req.params;
 
+  if (!allowedProducts.includes(product_name)) {
+    return res.status(400).json({ message: "Invalid product name" });
+  }
+
+  let db;
   try {
-    const db = await connectToDatabase();
+    db = await connectToDatabase();
 
-      const [rows] = await db.query(
-          "SELECT * FROM products_page_contents WHERE product_name = ? AND lang = ?",
-          [product_name, lang]
-      );
+    const [rows] = await db.query(
+        "SELECT * FROM ?? WHERE lang = ?",
+        [product_name, lang]
+    );
 
-      if (rows.length === 0) {
-          return res.status(404).json({ message: "Product not found" });
-      }
+    if (rows.length === 0) {
+        return res.status(404).json({ message: "Product not found" });
+    }
 
-      res.json(rows[0]);
+    res.json(rows[0]);
   } catch (error) {
-      console.error("Error fetching product:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-
+    console.error("Error fetching product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   } finally {
     if (db) db.release(); // ✅ Always release the connection
   }
