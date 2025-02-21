@@ -8,6 +8,9 @@ import 'dotenv/config';
 
 const router = express.Router();
 
+// List of valid products
+const allowedProducts = ['gold_loan', 'fixed_deposits', 'mortgage', 'leasing', 'luckewallet', 'forex'];
+
 // Middleware to verify JWT Token
 const verifyToken = async (req, res, next) => {
     try {
@@ -81,38 +84,103 @@ router.post("/upload", verifyToken, upload.single("image"), async (req, res) => 
 
 // Delete API
 router.delete("/delete/:filename", verifyToken, async (req, res) => {
-    const { filename } = req.params;
-    const fileDirectory = req.body.file_directory || "media";
-    const filePath = path.join(fileDirectory, filename);
+  const { filename } = req.params;
+  const fileDirectory = req.body.file_directory || "media";
+  const filePath = path.join(fileDirectory, filename);
 
-    let db;
-    try {
-      db = await connectToDatabase();
+  let db;
+  try {
+    db = await connectToDatabase();
   
-      // Check if file exists in database
-      const [rows] = await db.query("SELECT * FROM file_uploads WHERE new_file_name = ? AND file_directory = ?", [filename, fileDirectory]);
-      if (rows.length === 0) {
-        return res.status(404).json({ message: "File not found in database" });
-      }
-  
-      // Delete file from system
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      } else {
-        return res.status(404).json({ message: "File not found in storage" });
-      }
-  
-      // Remove database record
-      await db.query("DELETE FROM file_uploads WHERE new_file_name = ? AND file_directory = ?", [filename, fileDirectory]);
-  
-      return res.status(200).json({ message: "File deleted successfully" });
-    } catch (err) {
-      return res.status(500).json({ message: err.message });
+    // Check if file exists in database
+    const [rows] = await db.query("SELECT * FROM file_uploads WHERE new_file_name = ? AND file_directory = ?", [filename, fileDirectory]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "File not found in database" });
     }
-  });
+  
+    // Delete file from system
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    } else {
+      return res.status(404).json({ message: "File not found in storage" });
+    }
+  
+    // Remove database record
+    await db.query("DELETE FROM file_uploads WHERE new_file_name = ? AND file_directory = ?", [filename, fileDirectory]);
+  
+    return res.status(200).json({ message: "File deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+});
 
-// Website API - Fetch Product Pages' Contents to the Frontend
-const allowedProducts = ['gold_loan', 'fixed_deposits', 'mortgage', 'leasing', 'luckewallet', 'forex']; // List of valid products
+//Fetch Product Pages' Contents to Dashboard
+
+router.get('/read/:table_name', verifyToken, async (req, res) => {
+  const { table_name } = req.params;
+
+  if (!allowedProducts.includes(table_name)) {
+    return res.status(400).json({ message: "Invalid table name" });
+  }
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    const [rows] = await db.query("SELECT * FROM ??", [table_name]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "No data found" });
+    }
+
+    res.json(rows); // ✅ Return entire array
+  } catch (error) {
+    console.error("Error fetching table:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  } finally {
+    if (db) db.release(); // ✅ Always release the connection
+  }
+});
+
+//Update Product Pages' Contents in Database
+
+router.put('/update/:table_name', verifyToken, async (req, res) => {
+  const { table_name } = req.params;
+
+  if (!allowedProducts.includes(table_name)) {
+    return res.status(400).json({ message: "Invalid table name" });
+  }
+
+  let db;
+  try{
+    //Capture real time
+    const uploadedAt = new Date();
+
+    //connect to DB
+    db = await connectToDatabase();
+
+    // Retrieve admin username
+    const [userRows] = await db.query("SELECT username FROM users WHERE id = ?", [req.userId]);
+    if (userRows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const uploadedBy = userRows[0].username;
+
+    const query = await db.query("UPDATE ?? SET `description` = ? WHERE lang = ?", [table_name]);
+  
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  
+  } finally {
+    if (db) db.release(); // ✅ Always release the connection
+  }
+
+})
+
+// ------------------------------- WEBSITE APIs ------------------------------------------ //
+
+// Fetch Product Pages' Contents to the Website
 
 router.get("/product/:product_name/:lang", async (req, res) => {
   const { product_name, lang } = req.params;

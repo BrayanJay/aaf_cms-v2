@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProductDescription from "../../../components/ProductDescription";
 
 function LuckewalletPageContents() {
     
   const [files, setFiles] = useState({});
+  const table_name = "luckewallet";
 
   const handleFile = (e, num) => {
     setFiles({ ...files, [num]: e.target.files[0] });
@@ -109,7 +111,10 @@ function LuckewalletPageContents() {
             </tbody>
           </table>
         </form>
-
+        
+        <div>
+          <ProductDescription table_name={table_name}/>
+        </div>
         
       </div>
     </div>

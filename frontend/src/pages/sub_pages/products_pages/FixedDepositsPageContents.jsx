@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProductDescription from "../../../components/ProductDescription";
 
 function FixedDepositsPageContents() {
     
   const [files, setFiles] = useState({});
+  const table_name = "fixed_deposits";
 
   const handleFile = (e, num) => {
     setFiles({ ...files, [num]: e.target.files[0] });
@@ -109,6 +111,9 @@ function FixedDepositsPageContents() {
             </tbody>
           </table>
         </form>
+        <div>
+          <ProductDescription table_name={table_name}/>
+        </div>
       </div>
     </div>
   );

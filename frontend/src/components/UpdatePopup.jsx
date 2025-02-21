@@ -1,0 +1,73 @@
+import { useState } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+
+function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, tableName }) {
+  const [description, setDescription] = useState(initialDescription || "");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        `http://localhost:3000/data/update/${tableName}`,
+        { description, lang: initialLang },
+        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+      );
+
+      alert(res.data.message);
+      onClose();
+    } catch (err) {
+      console.error("Update failed:", err);
+      alert("Failed to update description");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 className="text-xl font-semibold text-blue-800 mb-4">Update Description</h2>
+
+        <label className="block text-gray-700">Language:</label>
+        <select className="w-full p-2 border border-gray-300 rounded mt-1" disabled>
+          <option value={initialLang}>{initialLang === "en" ? "English" : initialLang === "si" ? "Sinhala" : "Tamil"}</option>
+        </select>
+
+        <label className="block text-gray-700 mt-3">New Description:</label>
+        <textarea
+          className="w-full p-2 border border-gray-300 rounded mt-1"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows="3"
+        />
+
+        <div className="flex justify-end space-x-3 mt-4">
+          <button className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md" onClick={onClose}>
+            Cancel
+          </button>
+          <button
+            className={`bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Submit"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+UpdatePopup.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  initialLang: PropTypes.string.isRequired,
+  initialDescription: PropTypes.string,
+  tableName: PropTypes.string.isRequired,
+};
+
+export default UpdatePopup;

@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProductDescription from "../../../components/ProductDescription";
 
 function MortgagePageContents() {
     
   const [files, setFiles] = useState({});
+  const table_name = "mortgage";
 
   const handleFile = (e, num) => {
     setFiles({ ...files, [num]: e.target.files[0] });
@@ -109,6 +111,11 @@ function MortgagePageContents() {
             </tbody>
           </table>
         </form>
+
+        <div>
+          <ProductDescription table_name={table_name}/>
+        </div>
+
       </div>
     </div>
   );
