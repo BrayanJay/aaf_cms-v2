@@ -66,39 +66,39 @@ function AboutPageContents() {
   return (
     <div className="flex justify-center container py-20">
       <div className="w-full m-10 px-20">
-        <form>
-          <label className="text-blue-800 font-medium">About Page Carousel</label>
-          <table className="w-full border border-blue-300 shadow-lg border-separate">
+      <form>
+          <label className="text-blue-800 font-semibold text-xl">Carousel</label>
+          <table className="w-full mt-2">
             <thead>
               <tr className="bg-blue-500 text-white">
-                <th className="border border-blue-300 px-4 py-3 text-left">Slide</th>
-                <th className="border border-blue-300 px-4 py-3 text-left">File</th>
-                <th className="border border-blue-300 px-4 py-3 text-left">Action</th>
+                <th className="px-4 py-3 text-left rounded-tl-lg">Slide</th>
+                <th className="border-x-2 border-blue-300 px-4 py-3 text-left">File</th>
+                <th className="px-4 py-3 text-left rounded-tr-lg">Action</th>
               </tr>
             </thead>
             <tbody>
               {[1].map((num) => (
-                <tr key={num} className="odd:bg-blue-100 even:bg-blue-50 transition duration-200">
-                  <td className="border border-blue-300 px-4 py-1 font-medium text-slate-800">Slide 0{num}</td>
-                  <td className="border border-blue-300 px-4 py-1">
+                <tr key={num} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
+                  <td className="px-4 py-1 font-medium text-gray-800">Slide 0{num}</td>
+                  <td className="px-4 py-2 border-x-2 border-white">
                     <input
                       id={`slide${num}`}
                       type="file"
                       onChange={(e) => handleFile(e, num)}
-                      className="file:border file:border-blue-300 file:bg-blue-50 file:text-blue-700 file:px-2 file:py-1 file:rounded-md file:cursor-pointer"
+                      className="w-full text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                     />
                   </td>
-                  <td className="flex justify-center border border-blue-300 px-4 py-1.5 space-x-2">
+                  <td className="flex justify-center items-center px-4 py-2 space-x-3">
                     <button
                       type="button"
-                      className="bg-green-800 hover:bg-green-900 text-white font-semibold px-4 py-1 rounded-md transition duration-200"
+                      className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
                       onClick={() => handleUpload(num)}
                     >
                       Upload
                     </button>
                     <button
                       type="button"
-                      className="bg-red-700 hover:bg-red-800 text-white font-semibold px-4 py-1 rounded-md transition duration-200"
+                      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
                       onClick={() => handleClear(num)}
                     >
                       Clear

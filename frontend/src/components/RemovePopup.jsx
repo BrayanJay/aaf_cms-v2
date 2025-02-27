@@ -3,9 +3,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_name }) {
+function RemovePopup({ isOpen, onClose, initialLang, table_name }) {
   const [lang] = useState(initialLang); // ✅ Allow language selection
-  const [description, setDescription] = useState(initialDescription || "");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -36,12 +36,6 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Validate input
-    if (!description.trim()) {
-      setError("Description cannot be empty.");
-      return;
-    }
   
     setLoading(true);
     setError(""); // Clear previous errors
@@ -75,34 +69,15 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
 
   if (!isOpen) return null;
 
-  const languageMap = {
-    en: "English",
-    si: "Sinhala",
-    ta: "Tamil",
-  };
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-semibold text-blue-800 mb-4">Update Description</h2>
+      <h2 className="block text-gray-700 mt-3">Are you sure?</h2>
+      <p className="text-gray-600">This action will clear the description.</p>
 
         {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
         <form onSubmit={handleSubmit}>
-          <label className="block text-gray-700">Language:</label>
-          {/* Auto-selected language (not editable) */}
-          <p className="w-full p-2 border border-gray-300 rounded mt-1 bg-gray-100">
-            {languageMap[lang] || "Unknown"} {/* Display the fixed language */}
-          </p>
-
-          <label className="block text-gray-700 mt-3">New Description:</label>
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="3"
-          />
-
           <div className="flex justify-end space-x-3 mt-4">
             <button
               type="button"
@@ -116,7 +91,7 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
               className={`bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={loading}
             >
-              {loading ? "Updating..." : "Submit"}
+              {loading ? "Removing..." : "Confirm"}
             </button>
           </div>
         </form>
@@ -125,12 +100,11 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
   );
 }
 
-UpdatePopup.propTypes = {
+RemovePopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   initialLang: PropTypes.string.isRequired,
-  initialDescription: PropTypes.string,
   table_name: PropTypes.string.isRequired,
 };
 
-export default UpdatePopup;
+export default RemovePopup;

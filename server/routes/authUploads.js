@@ -115,8 +115,7 @@ router.delete("/delete/:filename", verifyToken, async (req, res) => {
 });
 
 //Fetch Product Pages' Contents to Dashboard
-
-router.get('/read/:table_name', verifyToken, async (req, res) => {
+router.get('/read/:table_name', async (req, res) => {
   const { table_name } = req.params;
 
   if (!allowedProducts.includes(table_name)) {
@@ -143,21 +142,31 @@ router.get('/read/:table_name', verifyToken, async (req, res) => {
 });
 
 //Update Product Pages' Contents in Database
-
 router.put('/update/:table_name', verifyToken, async (req, res) => {
   const { table_name } = req.params;
+  const { description, lang } = req.body;
+
+  //console.log('Updating table:', table_name); // Debugging log
+  //console.log('Description:', description, 'Lang:', lang);
 
   if (!allowedProducts.includes(table_name)) {
     return res.status(400).json({ message: "Invalid table name" });
   }
 
-  let db;
-  try{
-    //Capture real time
-    const uploadedAt = new Date();
+  // Validate lang parameter
+  const validLanguages = ['en', 'si', 'ta']; // Ensure these are the allowed languages
+  if (!validLanguages.includes(lang)) {
+    return res.status(400).json({ message: "Invalid language code" });
+  }
 
-    //connect to DB
+  let db;
+  try {
+
+    // Connect to DB
     db = await connectToDatabase();
+
+    // Capture real time
+    const uploadedAt = new Date();
 
     // Retrieve admin username
     const [userRows] = await db.query("SELECT username FROM users WHERE id = ?", [req.userId]);
@@ -166,17 +175,16 @@ router.put('/update/:table_name', verifyToken, async (req, res) => {
     }
     const uploadedBy = userRows[0].username;
 
-    const query = await db.query("UPDATE ?? SET `description` = ? WHERE lang = ?", [table_name]);
-  
+    await db.query("UPDATE ?? SET `description` = ?, `uploaded_by` = ?, `uploaded_at` = ? WHERE lang = ?", [table_name, description, uploadedBy, uploadedAt, lang]);
+    
+    return res.status(201).json({ message: "Content updated successfully" });
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error updating product:", error);
     res.status(500).json({ message: "Internal Server Error" });
-  
   } finally {
-    if (db) db.release(); // ✅ Always release the connection
+    if (db) db.release(); // Always release the connection
   }
-
-})
+});
 
 // ------------------------------- WEBSITE APIs ------------------------------------------ //
 
@@ -202,9 +210,9 @@ router.get("/product/:product_name/:lang", async (req, res) => {
         return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json(rows[0]);
+    res.json(rows);
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error fetching product:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   } finally {
     if (db) db.release(); // ✅ Always release the connection

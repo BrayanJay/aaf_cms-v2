@@ -7,7 +7,8 @@ const app = express()
 
 app.use(cors({
     origin: "*",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow PUT requests
+    //allowedHeaders: ["Content-Type", "Authorization"], // Allow required headers
 }))
 app.use(express.json())
 app.use('/auth', authRouter)
