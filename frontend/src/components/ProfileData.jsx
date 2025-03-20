@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import UpdateProfilePopup from './UpdateProfilePopup';
 import { Trash2 } from 'lucide-react';
 import RemoveProfilePopup from './RemoveProfilePopup';
+import ProfilePictureUpload from './ProfilePictureUpload';
 
 const ProfileData = ({id, tokenUrl}) => {
 
@@ -43,6 +44,9 @@ const ProfileData = ({id, tokenUrl}) => {
 
   return (
         <div>
+            <ProfilePictureUpload tokenUrl={tokenUrl} id={id}/>
+          <label className="text-blue-600 font-normal text-base">Profile Details</label>
+
             <table className="table mt-2">
                     <thead>
                         <tr className="bg-blue-400 text-white">

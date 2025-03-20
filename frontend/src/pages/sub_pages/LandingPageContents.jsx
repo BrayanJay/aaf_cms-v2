@@ -65,14 +65,14 @@ function LandingPageContents() {
   }, [])
 
   return (
-    <div className="flex justify-center py-20">
-      <div className="flex flex-col gap-10 w-full max-w-4xl px-6">
+    <div className="flex justify-center container py-20">
+      <div className="flex flex-col gap-10 w-full m-10 px-20">
 
         <form>
           <label className="text-blue-800 font-semibold text-xl">Carousel</label>
           <table className="w-full mt-2">
             <thead>
-              <tr className="bg-blue-600 text-white">
+              <tr className="bg-blue-500 text-white">
                 <th className="px-4 py-3 text-left rounded-tl-lg">Slide</th>
                 <th className="border-x-2 border-blue-300 px-4 py-3 text-left">File</th>
                 <th className="px-4 py-3 text-left rounded-tr-lg">Action</th>

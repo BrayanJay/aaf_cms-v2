@@ -121,8 +121,8 @@ function AboutPageContents() {
           <label className="text-blue-800 font-semibold text-xl">Profile Details</label>
           {ids.length > 0 && 
             ids.map((id) => (
-              <div key={id}>
-                <label className="text-blue-800 font-semibold text-base">Profile {id}</label>
+              <div key={id} className="pt-2.5">
+                <label className="text-blue-600 font-semibold text-lg">Profile {id}</label>
                 <ProfileData id={id} tokenUrl={tokenUrl}/>
               </div>
             ))

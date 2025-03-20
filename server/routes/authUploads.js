@@ -29,7 +29,7 @@ const verifyToken = async (req, res, next) => {
 // Use memory storage, then move the file manually
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Upload API
+// Upload Image API
 router.post("/upload", verifyToken, upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
@@ -82,7 +82,7 @@ router.post("/upload", verifyToken, upload.single("image"), async (req, res) => 
   }
 });
 
-// Delete API
+// Delete Image API
 router.delete("/delete/:filename", verifyToken, async (req, res) => {
   const { filename } = req.params;
   const fileDirectory = req.body.file_directory || "media";
