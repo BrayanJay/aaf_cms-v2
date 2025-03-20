@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileData from "../../components/ProfileData";
+//import Test from "../../components/Test";
 
 function AboutPageContents() {
     
   const [files, setFiles] = useState({});
+
+  const tokenUrl = "http://localhost:3000/auth/aboutpagecontents"
 
   const handleFile = (e, num) => {
     setFiles({ ...files, [num]: e.target.files[0] });
@@ -45,7 +49,7 @@ function AboutPageContents() {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:3000/auth/aboutpagecontents', {
+      const response = await axios.get(tokenUrl, {
         headers: {
           "Authorization" : `Bearer ${token}`
         }
@@ -63,9 +67,12 @@ function AboutPageContents() {
     fetchUser()
   }, [])
 
+  const ids = Array.from({ length: 17 }, (_, i) => i + 1);
+
   return (
     <div className="flex justify-center container py-20">
-      <div className="w-full m-10 px-20">
+      <div className="flex flex-col gap-10 w-full m-10 px-20">
+        <div>
       <form>
           <label className="text-blue-800 font-semibold text-xl">Carousel</label>
           <table className="w-full mt-2">
@@ -109,6 +116,18 @@ function AboutPageContents() {
             </tbody>
           </table>
         </form>
+        </div>
+        <div className="">
+          <label className="text-blue-800 font-semibold text-xl">Profile Details</label>
+          {ids.length > 0 && 
+            ids.map((id) => (
+              <div key={id}>
+                <label className="text-blue-800 font-semibold text-base">Profile {id}</label>
+                <ProfileData id={id} tokenUrl={tokenUrl}/>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </div>
   );

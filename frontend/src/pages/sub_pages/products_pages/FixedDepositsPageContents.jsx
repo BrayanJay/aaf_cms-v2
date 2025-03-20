@@ -198,7 +198,7 @@ function FixedDepositsPageContents() {
         </form>
         </div>
         <div>
-          <ProductDescription table_name={table_name}/>
+          <ProductDescription table_name={table_name} tokenUrl="http://localhost:3000/auth/fixeddepositspagecontents"/>
         </div>
       </div>
     </div>

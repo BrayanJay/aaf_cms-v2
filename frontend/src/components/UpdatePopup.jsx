@@ -3,71 +3,56 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_name }) {
-  const [lang] = useState(initialLang); // ✅ Allow language selection
+function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_name ,tokenUrl }) {
+  const [lang] = useState(initialLang); 
   const [description, setDescription] = useState(initialDescription || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  // Optional fetch user data (if needed for your logic)
-  const fetchUser = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/auth/goldloanpagecontents", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-      if (response.status !== 201) {
-        navigate("/login");
-      }
-    } catch (err) {
-      navigate("/login");
-      console.log(err);
-    }
-  };
-
-  // This can be optional depending on your usage
   useEffect(() => {
-    fetchUser(); // Call only if user info is required
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        //console.log("Token: ", token);
+        const response = await axios.get(tokenUrl, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.status !== 201) navigate("/login");
+      } catch (err) {
+        navigate("/login");
+        console.log(err);
+      }
+    };
+
+    fetchUser();
+  }, [navigate, tokenUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Validate input
     if (!description.trim()) {
       setError("Description cannot be empty.");
       return;
     }
   
     setLoading(true);
-    setError(""); // Clear previous errors
-  
+    setError("");
+
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(
-        `http://localhost:3000/data/update/${table_name}`,
-        { description, lang }, // Include 'lang' in the request body
-        { headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } }
+      const res = await axios.put(`http://localhost:3000/data/update/${table_name}`, 
+        { description, lang }, 
+        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );
-  
-      //alert(res.data.message); // Assuming the response message gives feedback
-      setDescription(""); // Clear the description field after successful update
-      onClose(); // Close popup after successful update
-    
-      // Reload the page to reflect changes
-      window.location.reload();
 
+      setDescription(""); 
+      onClose();
+      window.location.reload();
     } catch (err) {
       console.error("Update failed:", err);
-      if (err.response && err.response.data) {
-        setError(err.response.data.message || "Failed to update description");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+      setError(err.response?.data?.message || "Failed to update description");
     } finally {
       setLoading(false);
     }
@@ -75,24 +60,19 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
 
   if (!isOpen) return null;
 
-  const languageMap = {
-    en: "English",
-    si: "Sinhala",
-    ta: "Tamil",
-  };
+  const languageMap = { en: "English", si: "Sinhala", ta: "Tamil" };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-semibold text-blue-800 mb-4">Update Description</h2>
 
-        {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
+        {error && <p className="text-red-500">{error}</p>}
 
         <form onSubmit={handleSubmit}>
           <label className="block text-gray-700">Language:</label>
-          {/* Auto-selected language (not editable) */}
           <p className="w-full p-2 border border-gray-300 rounded mt-1 bg-gray-100">
-            {languageMap[lang] || "Unknown"} {/* Display the fixed language */}
+            {languageMap[lang] || "Unknown"}
           </p>
 
           <label className="block text-gray-700 mt-3">New Description:</label>
@@ -131,6 +111,7 @@ UpdatePopup.propTypes = {
   initialLang: PropTypes.string.isRequired,
   initialDescription: PropTypes.string,
   table_name: PropTypes.string.isRequired,
+  tokenUrl: PropTypes.string.isRequired,
 };
 
 export default UpdatePopup;

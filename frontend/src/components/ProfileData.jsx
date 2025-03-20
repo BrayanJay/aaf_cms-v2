@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
-import UpdatePopup from './UpdatePopup';
-import RemovePopup from './RemovePopup';
+import UpdateProfilePopup from './UpdateProfilePopup';
+import { Trash2 } from 'lucide-react';
+import RemoveProfilePopup from './RemoveProfilePopup';
 
-const ProductDescription = ({table_name, tokenUrl}) => {
+const ProfileData = ({id, tokenUrl}) => {
 
     const [data, setData] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -14,15 +15,19 @@ const ProductDescription = ({table_name, tokenUrl}) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const res = await axios.get(`http://localhost:3000/data/read/${table_name}`);
-            setData(Array.isArray(res.data) ? res.data : []);
+            const res = await axios.get(`http://localhost:3000/data/read/profile/${id}`);
+            const updatedData = res.data.map(profile => ({
+              ...profile,
+              description: JSON.parse(profile.description || "[]"), // ✅ Parse JSON description
+            }));
+            setData(Array.isArray(updatedData) ? updatedData : []);
           } catch (err) {
             console.log("Error fetching data:", err.message);
           }
         };
       
         fetchData();
-      }, [table_name]);
+      }, [id]);
 
       
 
@@ -38,34 +43,46 @@ const ProductDescription = ({table_name, tokenUrl}) => {
 
   return (
         <div>
-            <label className="text-blue-800 font-semibold text-xl">Product Description</label>
             <table className="table mt-2">
                     <thead>
                         <tr className="bg-blue-400 text-white">
-                            <th className="rounded-tl-lg">Content</th>
-                            <th className="border-x-2 border-blue-300 px-2">Language</th>
-                            <th className="border-x-2 border-blue-300">Current Value</th>
-                            <th className="rounded-tr-lg">Actions</th>
+                            <th className="rounded-tl-lg py-2 px-2">Profile ID</th>
+                            <th className="border-x-2 border-blue-300 px-2">Name</th>
+                            <th className="border-x-2 border-blue-300 px-2">Designation</th>
+                            <th className="border-x-2 border-blue-300 px-2">Description</th>
+                            <th className="rounded-tr-lg px-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.length > 0 ? (
-                          data.map( (product, index) => (
-                            <tr className='h-full odd:bg-blue-50 even:bg-blue-100' key={index}>
-                              <th className="px-5 text-center">Description</th>
-                                <td className="px-5 text-center font-semibold">{product.lang}</td>
-                                <td className="py-2 px-2">{product.description}</td>
+                          data.map( (profile, index) => (
+                            <tr className='h-full odd:bg-blue-50 even:bg-blue-100 col-span-6' key={index}>
+                              <th className="px-5 text-center">{profile.profile_id}</th>
+                                <td className="py-2 px-2">{profile.profile_name}</td>
+                                <td className="py-2 px-2">{profile.designation}</td>
+                                 {/* ✅ Display JSON array properly */}
+                                <td className="py-2 px-2">
+                                  <div className='flex flex-col gap-y-5'>
+                                  {profile.description.map((desc, i) => (
+                                    <div key={i} className="flex items-center">
+                                      <span>{desc}</span>
+                                    </div>
+                                  ))}
+                                  </div>
+                                  
+                                </td>
                                 <td className="flex items-center justify-center space-x-2 py-2 h-full px-2">
                                   <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200" 
-                                    onClick={() => handleUpdateClick(product)}>
-                                    Update
+                                    onClick={() => handleUpdateClick(profile)}>
+                                    Edit
                                   </button>
                                   <button className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200"
-                                    onClick={() => handleRemoveClick(product)}>
-                                    Remove
+                                    onClick={() => handleRemoveClick(profile)}>
+                                    <Trash2/>
                                   </button>
                                 </td>
                             </tr>
+                            
                             ))
                           ) : (
                             <tr>
@@ -79,38 +96,33 @@ const ProductDescription = ({table_name, tokenUrl}) => {
 
             {/* Render Popup only when isPopupOpen is true */}
       {isPopupOpen && selectedItem && (
-        <UpdatePopup
+        <UpdateProfilePopup
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
           initialLang={selectedItem.lang}
+          initialProfile_name={selectedItem.profile_name}
+          initialDesignation={selectedItem.designation}
           initialDescription={selectedItem.description}
-          table_name={table_name}// Set dynamically if needed
+          id={id}// Set dynamically if needed
           tokenUrl={tokenUrl}
-          updateData={(updatedItem) => {
-            setData((prevData) =>
-              prevData.map((item) =>
-                item.lang === updatedItem.lang ? { ...item, description: updatedItem.description } : item
-              )
-            );
-          }}
         />
       )}
 
       {isRemovePopupOpen && selectedItem && (
-        <RemovePopup
+        <RemoveProfilePopup
           isOpen={isRemovePopupOpen}
           onClose={() => setIsRemovePopupOpen(false)}
           initialLang={selectedItem.lang}
-          table_name={table_name} // Set dynamically if needed
+          id={id} // Set dynamically if needed
         />
       )}
 
         </div>
   )
 }
-ProductDescription.propTypes = {
-  table_name: PropTypes.string.isRequired,
+ProfileData.propTypes = {
+  id: PropTypes.number.isRequired,
   tokenUrl: PropTypes.string.isRequired,
 };
 
-export default ProductDescription
+export default ProfileData

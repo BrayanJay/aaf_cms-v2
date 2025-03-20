@@ -14,7 +14,7 @@ const SideBar = () => {
         <div className="flex fixed top-1/4 left-5 flex-col items-center gap-8 z-50">
 
               {/* Home Tab */}
-              <Link to="/">
+              {/*<Link to="/">
               <div className="group relative w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 flex items-center justify-center p-5">
 
                 <div className="relative z-10 w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 bg-blue-700 hover:bg-blue-500 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center transition-all duration-300 ease-in-out p-5">
@@ -25,10 +25,10 @@ const SideBar = () => {
                     Dashboard
                 </div>
             </div>
-            </Link>
+            </Link>*/}
 
             {/* Uploads Tab */}
-            <Link to="/uploads">
+            <Link to="/">
             <div className="group relative w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 flex items-center justify-center p-5">
 
                 <div className="relative z-10 w-8 h-8 md:w-12 md:h-12 lg:w-16 lg:h-16 bg-blue-700 hover:bg-blue-500 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center transition-all duration-300 ease-in-out p-5">

@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Home from './pages/Home'
+//import Home from './pages/Home'
 //import Register from './pages/Register'
 import Login from './pages/Login'
 import Header from './components/Header'
@@ -35,8 +35,8 @@ function App() {
 
           {/*Routes with Sidebar*/}
           <Route element={<Layout />}>
-          <Route path='/' element={<Home />}/>
-          <Route path='/uploads' element={<DashboardUpload/>}/>
+          {/*<Route path='/' element={<Home />}/>*/}
+          <Route path='/' element={<DashboardUpload/>}/>
 
           {/*Sub Pages */}
           <Route path='/landingPage' element={<LandingPageContents/>}/>
@@ -53,6 +53,7 @@ function App() {
           <Route path='/mortgagePage' element={<MortgagePageContents/>}/>
           <Route path='/forexPage' element={<ForexPageContents/>}/>
           <Route path='/luckewalletPage' element={<LuckewalletPageContents/>}/>
+
           
           </Route>
         </Routes>

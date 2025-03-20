@@ -113,7 +113,7 @@ function ForexPageContents() {
         </form>
         
         <div>
-          <ProductDescription table_name={table_name}/>
+          <ProductDescription table_name={table_name} tokenUrl="http://localhost:3000/auth/forexpagecontents"/>
         </div>
 
       </div>
