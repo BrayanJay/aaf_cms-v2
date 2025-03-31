@@ -191,7 +191,7 @@ router.put('/update/:table_name', verifyToken, async (req, res) => {
 
 // ------------------------------- PROFILE APIs ------------------------------------------ //
 
-// Get All Profiles ---- NEW
+// Get All Profiles
 router.get('/read/profile/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -334,6 +334,56 @@ router.delete("/profiles/:id/:lang", verifyToken, async (req, res) => {
 
   } finally {
     if (db) db.release();
+  }
+});
+
+// ------------------------------- BRANCH DETAILS APIs ------------------------------------------ //
+
+//Get branch data - Enlgish
+router.get("/branches/getBranchDetails", async (req, res) => {
+  const { lang = "en" } = req.query; // Get language from query params, default to 'en'
+
+  let db;
+  try {
+    db = await connectToDatabase();
+    const [rows] = await db.query("SELECT * FROM branch_details WHERE lang = ?", [lang]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "No branches found for the selected language." });
+    }
+
+    res.json(rows); // Return all matching branches
+
+  } catch (e) {
+    console.error("Error fetching branch details:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) await db.release(); // Ensure release is awaited
+  }
+});
+
+//Get All Details by Branch ID
+router.get("/branches/getBranchById/:branch_id", async (req, res) => {
+  const { branch_id } = req.query; // Get language from query params, default to 'en'
+
+  let db;
+  try {
+    db = await connectToDatabase();
+    const [rows] = await db.query("SELECT * FROM branch_details WHERE branch_id = ?", [branch_id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "No branches found for the selected language." });
+    }
+
+    res.json(rows); // Return all matching branches
+
+  } catch (e) {
+    console.error("Error fetching branch details:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) await db.release(); // Ensure release is awaited
   }
 });
 

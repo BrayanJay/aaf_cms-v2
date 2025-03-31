@@ -108,6 +108,8 @@ router.get('/mortgagepagecontents', verifyToken, (req, res) => getUserData(req, 
 router.get('/forexpagecontents', verifyToken, (req, res) => getUserData(req, res, 'forexpagecontents'));
 router.get('/luckewalletpagecontents', verifyToken, (req, res) => getUserData(req, res, 'luckewalletpagecontents'));
 
+router.get('/branchdetails', verifyToken, (req, res) => getUserData(req, res, 'branchdetails'));
+
 
 // Protected routes ---- End ---------------------------------------------------------------- //
 
