@@ -364,13 +364,13 @@ router.get("/branches/getBranchDetails", async (req, res) => {
 });
 
 //Get All Details by Branch ID
-router.get("/branches/getBranchById/:branch_id", async (req, res) => {
-  const { branch_id } = req.query; // Get language from query params, default to 'en'
+router.get("/branches/getBranchById/:branch_id/:lang", async (req, res) => {
+  const { branch_id, lang } = req.params; 
 
   let db;
   try {
     db = await connectToDatabase();
-    const [rows] = await db.query("SELECT * FROM branch_details WHERE branch_id = ?", [branch_id]);
+    const [rows] = await db.query("SELECT * FROM branch_details WHERE branch_id = ? AND lang = ?", [branch_id, lang]);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: "No branches found for the selected language." });
@@ -428,32 +428,94 @@ router.get('/read/profile/:lang', async (req, res) => {
   const { lang } = req.params;
 
   let db;
-  try{
+  try {
     db = await connectToDatabase();
 
-    const [rows] = await db.query(
-      `SELECT personal_profile.id, personal_profile.profile_picture, profile_content.profile_name, profile_content.designation, profile_content.description, profile_content.lang
-      FROM personal_profile 
-      JOIN profile_content ON personal_profile.id = profile_content.profile_id
-      WHERE profile_content.lang = ?`, [lang]
+    // Query 1: Get all profiles
+    const [profiles] = await db.query(`SELECT id, profile_picture FROM personal_profile`);
+
+    if (!profiles.length) {
+      return res.status(404).json({ message: "No profiles found" });
+    }
+
+    // Query 2: Get all profile content matching the language
+    const [profileContents] = await db.query(
+      `SELECT profile_id, profile_name, designation, description, lang 
+       FROM profile_content 
+       WHERE lang = ?`, 
+      [lang]
     );
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "Product not found" });
-  }
-  res.json(rows);
-  
+    if (!profileContents.length) {
+      return res.status(404).json({ message: "No profile content found for the specified language" });
+    }
+
+    // Merge profiles with their content
+    const finalProfiles = profiles.map(profile => {
+      const content = profileContents.find(p => p.profile_id === profile.id);
+      return content ? { ...profile, ...content } : null;
+    }).filter(profile => profile !== null);
+
+    res.json(finalProfiles);
+
   } catch (e) {
-    console.error("Error fetching profile data:", error.message);
+    console.error("Error fetching profile data:", e.message);
     res.status(500).json({ message: "Internal Server Error" });
-  
+
   } finally {
-    if (db) db.release(); // ✅ Always release the connection
+    if (db) db.release(); // ✅ Ensure connection is released
   }
 });
 
+router.post('/read/profiles', async (req, res) => {
+  const { ids, lang } = req.body;
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: "Invalid profile IDs" });
+  }
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    // Query 1: Get profile pictures
+    const [profiles] = await db.query(
+      `SELECT id, profile_picture FROM personal_profile WHERE id IN (?)`, 
+      [ids]
+    );
+
+    if (profiles.length === 0) {
+      return res.status(404).json({ message: "Profiles not found" });
+    }
+
+    // Query 2: Get profile content
+    const [profileContents] = await db.query(
+      `SELECT profile_id, profile_name, designation, description, lang 
+       FROM profile_content 
+       WHERE profile_id IN (?) AND lang = ?`, 
+      [ids, lang]
+    );
+
+    // Merge the results
+    const finalProfiles = profiles.map(profile => {
+      const content = profileContents.find(p => p.profile_id === profile.id);
+      return content ? { ...profile, ...content } : null;
+    }).filter(profile => profile !== null);
+
+    res.json(finalProfiles);
+
+  } catch (error) {
+    console.error("Error fetching profiles:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) db.release();
+  }
+});
+
+
 // Fetch Personal Profile by ID to website
-router.get('/read/profile/:id/:lang', async (req, res) => {
+{/*router.get('/read/profile/:id/:lang', async (req, res) => {
   const { id, lang } = req.params;
 
   let db;
@@ -466,7 +528,7 @@ router.get('/read/profile/:id/:lang', async (req, res) => {
               profile_content.description, profile_content.lang
        FROM personal_profile 
        JOIN profile_content ON personal_profile.id = profile_content.profile_id
-       WHERE personal_profile.id = ? AND profile_content.lang = ?`, 
+       WHERE id = ? AND lang = ?`, 
       [id, lang]
     );
 
@@ -483,7 +545,58 @@ router.get('/read/profile/:id/:lang', async (req, res) => {
   } finally {
     if (db) db.release(); // ✅ Always release the connection
   }
+});*/}
+
+router.get('/read/profile/:id/:lang', async (req, res) => {
+  const { id, lang } = req.params;
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    // Query 1: Get profile picture from personal_profile
+    const [profile] = await db.query(
+      `SELECT id, profile_picture FROM personal_profile WHERE id = ?`, 
+      [id]
+    );
+
+    if (!profile.length) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    // Query 2: Get profile content from profile_content
+    const [profileContent] = await db.query(
+      `SELECT profile_name, designation, description, lang 
+       FROM profile_content 
+       WHERE profile_id = ? AND lang = ?`, 
+      [id, lang]
+    );
+
+    if (!profileContent.length) {
+      return res.status(404).json({ message: "Profile content not found for the specified language" });
+    }
+
+    // Combine results
+    const finalProfile = {
+      id: profile[0].id,
+      profile_picture: profile[0].profile_picture,
+      profile_name: profileContent[0].profile_name,
+      designation: profileContent[0].designation,
+      description: profileContent[0].description,
+      lang: profileContent[0].lang
+    };
+
+    res.json(finalProfile);
+
+  } catch (error) {
+    console.error("Error fetching profile data:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) db.release(); // ✅ Ensure connection is released
+  }
 });
+
 
 
 export default router;
