@@ -39,7 +39,7 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
         const formData = new FormData();
         formData.append("image", files[num]);
         formData.append("filename", `${fileName[id]}.webp`);
-        formData.append("file_directory", "media/aboutPage/profiles"); // Custom File Path
+        formData.append("file_directory", "media/aboutPage/profiles"); // ../../../../asiaassetfinance/src/media/aboutPage/profiles/
       
         try {
           const token = localStorage.getItem("token");

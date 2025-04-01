@@ -513,40 +513,6 @@ router.post('/read/profiles', async (req, res) => {
   }
 });
 
-
-// Fetch Personal Profile by ID to website
-{/*router.get('/read/profile/:id/:lang', async (req, res) => {
-  const { id, lang } = req.params;
-
-  let db;
-  try {
-    db = await connectToDatabase();
-
-    const [rows] = await db.query(
-      `SELECT personal_profile.id, personal_profile.profile_picture, 
-              profile_content.profile_name, profile_content.designation, 
-              profile_content.description, profile_content.lang
-       FROM personal_profile 
-       JOIN profile_content ON personal_profile.id = profile_content.profile_id
-       WHERE id = ? AND lang = ?`, 
-      [id, lang]
-    );
-
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "Profile not found" });
-    }
-
-    res.json(rows[0]); // Return only the first matched profile object
-
-  } catch (error) {
-    console.error("Error fetching profile data:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-
-  } finally {
-    if (db) db.release(); // ✅ Always release the connection
-  }
-});*/}
-
 router.get('/read/profile/:id/:lang', async (req, res) => {
   const { id, lang } = req.params;
 
