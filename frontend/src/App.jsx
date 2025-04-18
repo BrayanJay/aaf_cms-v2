@@ -19,6 +19,7 @@ import MortgagePageContents from './pages/sub_pages/products_pages/MortgagePageC
 import ForexPageContents from './pages/sub_pages/products_pages/ForexPageContents'
 import LuckewalletPageContents from './pages/sub_pages/products_pages/LuckewalletPageContents'
 import BranchNetwork from './pages/BranchNetwork'
+import Documents from './pages/Documents'
 
 
 
@@ -39,6 +40,7 @@ function App() {
           {/*<Route path='/' element={<Home />}/>*/}
           <Route path='/' element={<DashboardUpload/>}/>
           <Route path='/branch-network' element={<BranchNetwork/>}/>
+          <Route path='/documents' element={<Documents/>}/>
 
           {/*Sub Pages */}
           <Route path='/landingPage' element={<LandingPageContents/>}/>

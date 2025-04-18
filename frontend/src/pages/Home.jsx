@@ -6,7 +6,7 @@ const Home = () => {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem(import.meta.env.VITE_SECRET_KEY)
       const response = await axios.get('http://localhost:3000/auth/home', {
         headers: {
           "Authorization" : `Bearer ${token}`

@@ -109,6 +109,7 @@ router.get('/forexpagecontents', verifyToken, (req, res) => getUserData(req, res
 router.get('/luckewalletpagecontents', verifyToken, (req, res) => getUserData(req, res, 'luckewalletpagecontents'));
 
 router.get('/branchdetails', verifyToken, (req, res) => getUserData(req, res, 'branchdetails'));
+router.get('/documents', verifyToken, (req, res) => getUserData(req, res, 'documents'));
 
 
 // Protected routes ---- End ---------------------------------------------------------------- //

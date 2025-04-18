@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PopupToggle from "../../components/PopupToggle";
 
 function LandingPageContents() {
-    
+  
+  const tokenUrl = "http://localhost:3000/auth/landingpagecontents"
+
   const [files, setFiles] = useState({});
 
   const handleFile = (e, num) => {
@@ -46,7 +49,7 @@ function LandingPageContents() {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:3000/auth/landingpagecontents', {
+      const response = await axios.get(tokenUrl, {
         headers: {
           "Authorization" : `Bearer ${token}`
         }
@@ -110,7 +113,10 @@ function LandingPageContents() {
               ))}
             </tbody>
           </table>
-        </form>    
+        </form>
+        <div className="flex w-full">
+        <PopupToggle tokenUrl={tokenUrl}/>   
+      </div>
       </div>
     </div>
   );

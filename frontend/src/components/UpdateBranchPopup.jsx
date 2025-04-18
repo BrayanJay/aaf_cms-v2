@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, initialRegion, initialAddress, id,  tokenUrl }) {
+function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, initialRegion, initialAddress, initialLongitude, initialLatitude, initialContact, id,  tokenUrl }) {
   const [branchName, setBranchName] = useState(initialBranchName || "");
   const [region, setRegion] = useState(initialRegion || "");
   const [address, setAddress] = useState(initialAddress || "");
+  const [longitude, setLongitude] = useState(initialLongitude || "");
+  const [latitude, setLatitude] = useState(initialLatitude || "");
+  const [contact, setContact] = useState(initialContact || "");
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,7 +37,7 @@ function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, i
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!branchName || !region || !address) {
+    if (!branchName || !region || !address || !longitude || !latitude || !contact) {
       setError("Fields cannot be empty.")
       return; // Prevent empty submission ✅
     }
@@ -43,14 +47,17 @@ function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, i
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:3000/data/update/profile/${id}`, 
-        { branchName, region, address, lang: initialLang }, 
+      const res = await axios.put(`http://localhost:3000/data/updateBranch/${id}`, 
+        { branch_name: branchName, region, address, longitude, latitude, contact, lang: initialLang }, 
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
       );
       console.log(res)
       setBranchName("");
       setRegion("");
-      setAddress(""); 
+      setAddress("");
+      setLongitude("");
+      setLatitude("");
+      setContact("");
       onClose();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setTimeout(() => {
@@ -78,34 +85,67 @@ function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, i
   
   
             <div className="mb-4">
-              <label className="block text-blue-700">Branch Name</label>
+              <label className="block text-slate-700">Branch Name</label>
               <input
                 type="text"
                 value={branchName}
                 onChange={(e) => setBranchName(e.target.value)}
-                className="w-full p-2 border rounded-md text-sm border-blue-300 bg-blue-100"
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
                 required
               />
             </div>
             
             <div className="mb-4">
-              <label className="block text-blue-700">Region</label>
+              <label className="block text-slate-700">Region</label>
               <input
                 type="text"
                 value={region}
                 onChange={(e) => setRegion(e.target.value)}
-                className="w-full p-2 border rounded-md text-sm border-blue-300 bg-blue-100"
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
                 required
               />
             </div>
   
             <div className="mb-4">
-              <label className="block text-blue-700">Address</label>
+              <label className="block text-slate-700">Address</label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full p-2 border rounded-md text-sm border-blue-300 bg-blue-100"
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-slate-700">Latitude</label>
+              <input
+                type="text"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-slate-700">Longitude</label>
+              <input
+                type="text"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-slate-700">Contact No</label>
+              <input
+                type="text"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                className="w-full p-2 border rounded-md text-sm border-blue-300 "
                 required
               />
             </div>
@@ -138,7 +178,10 @@ function UpdateBranchPopup ({ isOpen, onClose, initialLang, initialBranchName, i
     initialLang: PropTypes.string.isRequired,
     initialBranchName: PropTypes.string,
     initialRegion: PropTypes.string,
-    initialAddress: PropTypes.array,
+    initialAddress: PropTypes.string,
+    initialLongitude: PropTypes.string,
+    initialLatitude: PropTypes.string,
+    initialContact: PropTypes.string,
     id: PropTypes.number.isRequired,
     tokenUrl: PropTypes.string.isRequired,
   };

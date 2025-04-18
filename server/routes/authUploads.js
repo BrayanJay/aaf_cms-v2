@@ -339,20 +339,92 @@ router.delete("/profiles/:id/:lang", verifyToken, async (req, res) => {
 
 // ------------------------------- BRANCH DETAILS APIs ------------------------------------------ //
 
-//Get branch data - Enlgish
-router.get("/branches/getBranchDetails", async (req, res) => {
-  const { lang = "en" } = req.query; // Get language from query params, default to 'en'
+//Get branch data
+router.get("/branches/getBranchDetails/:lang", async (req, res) => {
+  const { lang = "en" } = req.params; // Get language from query params, default to 'en'
 
   let db;
   try {
     db = await connectToDatabase();
-    const [rows] = await db.query("SELECT * FROM branch_details WHERE lang = ?", [lang]);
 
-    if (rows.length === 0) {
+    // Fetch all branch details for the given language
+    const [branchDetails] = await db.query("SELECT * FROM branch_details WHERE lang = ?", [lang]);
+
+    if (branchDetails.length === 0) {
       return res.status(404).json({ message: "No branches found for the selected language." });
     }
 
-    res.json(rows); // Return all matching branches
+    // Extract all branch_ids from branchDetails
+    const branchIds = branchDetails.map(branch => branch.branch_id);
+
+    // Fetch coordinates for all branch_ids
+    const [coordinates] = await db.query("SELECT branch_id, latitude, longitude FROM branch_coordinates WHERE branch_id IN (?)", [branchIds]);
+
+    // Fetch contacts for all branch_ids
+    const [contacts] = await db.query("SELECT branch_id, contact_number, picture FROM branch_contacts WHERE branch_id IN (?)", [branchIds]);
+
+    // Convert coordinates and contacts into maps for easy lookup
+    const coordinatesMap = Object.fromEntries(coordinates.map(coord => [coord.branch_id, coord]));
+    const contactsMap = Object.fromEntries(contacts.map(contact => [contact.branch_id, contact]));
+
+    // Merge all data based on branch_id
+    const mergedData = branchDetails.map(branch => ({
+      ...branch,
+      latitude: coordinatesMap[branch.branch_id]?.latitude || null,
+      longitude: coordinatesMap[branch.branch_id]?.longitude || null,
+      contact_number: contactsMap[branch.branch_id]?.contact_number || null,
+      picture: contactsMap[branch.branch_id]?.picture || null
+    }));
+
+    res.json(mergedData);  
+
+  } catch (e) {
+    console.error("Error fetching branch details:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) await db.release(); // Ensure release is awaited
+  }
+});
+
+//Get Branches by region
+router.get("/branches/getBranchDetails/:region_code/:lang", async (req, res) => {
+  const { region_code, lang = "en" } = req.params; // Get language from query params, default to 'en'
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    // Fetch all branch details for the given language
+    const [branchDetails] = await db.query("SELECT * FROM branch_details WHERE region_code = ? AND lang = ?", [region_code, lang]);
+
+    if (branchDetails.length === 0) {
+      return res.status(404).json({ message: "No branches found for the selected language." });
+    }
+
+    // Extract all branch_ids from branchDetails
+    const branchIds = branchDetails.map(branch => branch.branch_id);
+
+    // Fetch coordinates for all branch_ids
+    const [coordinates] = await db.query("SELECT branch_id, latitude, longitude FROM branch_coordinates WHERE branch_id IN (?)", [branchIds]);
+
+    // Fetch contacts for all branch_ids
+    const [contacts] = await db.query("SELECT branch_id, contact_number, picture FROM branch_contacts WHERE branch_id IN (?)", [branchIds]);
+
+    // Convert coordinates and contacts into maps for easy lookup
+    const coordinatesMap = Object.fromEntries(coordinates.map(coord => [coord.branch_id, coord]));
+    const contactsMap = Object.fromEntries(contacts.map(contact => [contact.branch_id, contact]));
+
+    // Merge all data based on branch_id
+    const mergedData = branchDetails.map(branch => ({
+      ...branch,
+      latitude: coordinatesMap[branch.branch_id]?.latitude || null,
+      longitude: coordinatesMap[branch.branch_id]?.longitude || null,
+      contact_number: contactsMap[branch.branch_id]?.contact_number || null,
+      picture: contactsMap[branch.branch_id]?.picture || null
+    }));
+
+    res.json(mergedData);  
 
   } catch (e) {
     console.error("Error fetching branch details:", e.message);
@@ -365,18 +437,35 @@ router.get("/branches/getBranchDetails", async (req, res) => {
 
 //Get All Details by Branch ID
 router.get("/branches/getBranchById/:branch_id/:lang", async (req, res) => {
-  const { branch_id, lang } = req.params; 
+  const { branch_id, lang } = req.params;
 
   let db;
   try {
     db = await connectToDatabase();
-    const [rows] = await db.query("SELECT * FROM branch_details WHERE branch_id = ? AND lang = ?", [branch_id, lang]);
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "No branches found for the selected language." });
+    // Fetch branch details for the given branch_id and language
+    const [branchDetails] = await db.query("SELECT * FROM branch_details WHERE branch_id = ? AND lang = ?", [branch_id, lang]);
+
+    if (branchDetails.length === 0) {
+      return res.status(404).json({ message: "No branch found for the given ID and language." });
     }
 
-    res.json(rows); // Return all matching branches
+    // Fetch branch coordinates for the given branch_id
+    const [coordinates] = await db.query("SELECT latitude, longitude FROM branch_coordinates WHERE branch_id = ?", [branch_id]);
+
+    // Fetch branch contacts for the given branch_id
+    const [contacts] = await db.query("SELECT contact_number, picture FROM branch_contacts WHERE branch_id = ?", [branch_id]);
+
+    // Merge the data into a single object
+    const mergedData = {
+      ...branchDetails[0], // Extracting first element as branch_id is unique
+      latitude: coordinates[0]?.latitude || null,   // Extract first latitude
+      longitude: coordinates[0]?.longitude || null, // Extract first longitude
+      contact_number: contacts[0]?.contact_number || null, // Extract first contact
+      picture: contacts[0]?.picture || null
+    };
+
+    res.json(mergedData);
 
   } catch (e) {
     console.error("Error fetching branch details:", e.message);
@@ -385,6 +474,116 @@ router.get("/branches/getBranchById/:branch_id/:lang", async (req, res) => {
   } finally {
     if (db) await db.release(); // Ensure release is awaited
   }
+});
+
+//Get Region Names
+router.get("/branches/getRegions/:lang", async (req, res) => {
+  const { lang } = req.params;
+  let db;
+  try {
+    db = await connectToDatabase();
+    const [regions] = await db.query("SELECT DISTINCT region_code, region FROM branch_details WHERE lang = ?", [lang]);
+    res.json(regions);
+  } catch (e) {
+    console.error("Error fetching regions:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  } finally {
+    if (db) await db.release();
+  }
+});
+
+
+//Update Branch Details
+router.put("/updateBranch/:id", async (req, res) => {
+  const { id } = req.params; //if id not worked try branch_id
+  const { branch_name, region, address, lang, longitude, latitude, contact } = req.body;
+
+  if (!branch_name || !region || !address || !lang || !longitude || !latitude || !contact) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  let db;
+  try {
+    db = await connectToDatabase();
+    const [branchDetails] = await db.query("UPDATE branch_details SET branch_name = ?, region = ?, address = ? WHERE branch_id = ? AND lang = ?", [branch_name, region, address, id, lang]);
+    const [coordinates] = await db.query("UPDATE branch_coordinates SET longitude = ?, latitude = ? WHERE branch_id = ?", [longitude, latitude, id]);
+    const [contacts] = await db.query("UPDATE branch_contacts SET contact_number = ? WHERE branch_id = ?", [contact, id]);
+    
+    
+    if (branchDetails.length === 0) {
+      return res.status(404).json({ message: "No branches found for the selected language." });
+    }
+
+    // Merge the data into a single object
+    const mergedData = {
+      ...branchDetails[0], // Extracting first element as branch_id is unique
+      latitude: coordinates[0]?.latitude || null,   // Extract first latitude
+      longitude: coordinates[0]?.longitude || null, // Extract first longitude
+      contact_number: contacts[0]?.contact_number || null, // Extract first contact
+    };
+
+    res.json(mergedData);
+
+  } catch (e) {
+    console.error("Error fetching branch details:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) await db.release(); // Ensure release is awaited
+  }
+});
+
+//Add New Branch
+router.post("/addBranch", async (req, res) => {
+  const { branch_details } = req.body; // Array of objects with lang, branch_name, region, address
+
+  if (!Array.isArray(branch_details) || branch_details.length !== 3) {
+    return res.status(400).json({ message: "Provide branch details in all three languages (en, si, ta)" });
+  }
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    // Get the last branch_id and increment it
+    const [lastBranch] = await db.query("SELECT MAX(branch_id) AS last_id FROM branch_details");
+    const newBranchId = (lastBranch[0].last_id || 0) + 1;
+
+    // Insert the branch details in 3 languages
+    const values = branch_details.map(({ lang, branch_name, region, address }) => [newBranchId, branch_name, region, address, lang]);
+    
+    await db.query(
+      "INSERT INTO branch_details (branch_id, branch_name, region, address, lang) VALUES ?", 
+      [values]
+    );
+
+    res.status(201).json({ message: "Branch added successfully", branch_id: newBranchId });
+
+  } catch (e) {
+    console.error("Error adding new branch:", e.message);
+    res.status(500).json({ message: "Internal Server Error" });
+
+  } finally {
+    if (db) await db.release();
+  }
+});
+
+// ------------------------------ Popup Feature APIs ---------------------------------- //
+let popupEnabled = true; // Default state
+
+// Get the current popup state
+router.get("/popup-state", (req, res) => {
+    res.json({ popupEnabled });
+});
+
+// Update the popup state
+router.post("/popup-state", (req, res) => {
+    const { enabled } = req.body;
+    if (typeof enabled !== "boolean") {
+        return res.status(400).json({ error: "Invalid value. Must be a boolean." });
+    }
+    popupEnabled = enabled;
+    res.json({ message: "Popup state updated", popupEnabled });
 });
 
 // ------------------------------- TEST APIs ------------------------------------------ //
