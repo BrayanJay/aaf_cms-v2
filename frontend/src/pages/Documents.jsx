@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import FileTable from "../components/FileTable";
 
 
 const Documents = () => {
@@ -32,6 +33,9 @@ const Documents = () => {
   return (
     <div className="py-20 px-40">
       <h1 className="text-xl font-bold text-blue-900 mb-5">Documents</h1>
+      <div>
+        <FileTable fileDirectory="annualReports" category="Annual Reports"/>
+      </div>
       </div>
   )
 }

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 
 
-const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath}) => {
+const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath,  documentName}) => {
 
     //Upload Popup Flyer
     const [files, setFiles] = useState({});
@@ -15,7 +15,7 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath}) => {
 
     const handleUpload = async (key) => {
         if (!files[key]) {
-        alert(`No file selected for profile picture${key}`);
+        alert(`No file selected for uploading!`);
         return;
     }
   
@@ -70,12 +70,12 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath}) => {
   return (
     <div className="flex flex-col pt-2">
         <form>
-        <label className="text-blue-600 font-semibold text-base pt-2">Profile</label>
+        <label className="text-blue-600 font-semibold text-base pt-2">Annual Reports</label>
           <table className="w-full mt-2">
             <tbody>
-              {["Popup"].map((key) => (
+              {[{documentName}].map((key) => (
                 <tr key={key} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
-                  <td className="px-4 py-1 font-medium text-gray-800">{key} Flyer</td>
+                  <td className="px-4 py-1 font-medium text-gray-800">{documentName}</td>
                   <td className="px-4 py-2 border-x-2 border-white">
                     <input
                       id={key}
@@ -111,7 +111,8 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath}) => {
 UploadDocument.propTypes = {
   tokenUrl: PropTypes.string.isRequired,
   documentNameWithExtention: PropTypes.string.isRequired,
-  filePath: PropTypes.string.isRequired
+  filePath: PropTypes.string.isRequired,
+  documentName: PropTypes.string.isRequired
 };
 
 export default UploadDocument

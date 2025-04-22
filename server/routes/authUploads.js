@@ -43,6 +43,11 @@ router.post("/upload", verifyToken, upload.single("image"), async (req, res) => 
     const filePath = path.join(fileDirectory, fileName);
     const uploadedAt = new Date();
 
+    //Sanitize file directory
+    if (!fileDirectory.startsWith("media/")) {
+      return res.status(400).json({ message: "Invalid directory path" });
+    }
+
     // Ensure directory exists
     if (!fs.existsSync(fileDirectory)) {
       fs.mkdirSync(fileDirectory, { recursive: true });
@@ -79,6 +84,48 @@ router.post("/upload", verifyToken, upload.single("image"), async (req, res) => 
 
   } finally {
     if (db) db.release(); // ✅ Always release the connection
+  }
+});
+
+// GET all files in a directory
+router.get("/getFiles", verifyToken, async (req, res) => {
+  try {
+    const folder = req.query.folder || "media/attachments";
+    const absolutePath = path.resolve(folder);
+
+    if (!fs.existsSync(absolutePath)) {
+      return res.status(404).json({ message: "Directory not found" });
+    }
+
+    const files = fs.readdirSync(absolutePath);
+    const fileDetails = files.map(file => {
+      const filePath = path.join(absolutePath, file);
+      const stats = fs.statSync(filePath);
+      return {
+        fileName: file,
+        path: `${folder}/${file}`,
+        updatedAt: stats.mtime
+      };
+    });
+
+    res.status(200).json(fileDetails);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete a file
+router.delete("/delete-file", verifyToken, async (req, res) => {
+  const filePath = req.body.path;
+  try {
+    if (!filePath || !fs.existsSync(filePath)) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    fs.unlinkSync(filePath);
+    return res.status(200).json({ message: "File deleted successfully" });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
   }
 });
 
@@ -388,15 +435,15 @@ router.get("/branches/getBranchDetails/:lang", async (req, res) => {
 });
 
 //Get Branches by region
-router.get("/branches/getBranchDetails/:region_code/:lang", async (req, res) => {
-  const { region_code, lang = "en" } = req.params; // Get language from query params, default to 'en'
+router.get("/branches/getBranchDetails/:region_name/:lang", async (req, res) => {
+  const { region_name, lang = "en" } = req.params; // Get language from query params, default to 'en'
 
   let db;
   try {
     db = await connectToDatabase();
 
     // Fetch all branch details for the given language
-    const [branchDetails] = await db.query("SELECT * FROM branch_details WHERE region_code = ? AND lang = ?", [region_code, lang]);
+    const [branchDetails] = await db.query("SELECT * FROM branch_details WHERE region_name = ? AND lang = ?", [region_name, lang]);
 
     if (branchDetails.length === 0) {
       return res.status(404).json({ message: "No branches found for the selected language." });
@@ -475,23 +522,6 @@ router.get("/branches/getBranchById/:branch_id/:lang", async (req, res) => {
     if (db) await db.release(); // Ensure release is awaited
   }
 });
-
-//Get Region Names
-router.get("/branches/getRegions/:lang", async (req, res) => {
-  const { lang } = req.params;
-  let db;
-  try {
-    db = await connectToDatabase();
-    const [regions] = await db.query("SELECT DISTINCT region_code, region FROM branch_details WHERE lang = ?", [lang]);
-    res.json(regions);
-  } catch (e) {
-    console.error("Error fetching regions:", e.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  } finally {
-    if (db) await db.release();
-  }
-});
-
 
 //Update Branch Details
 router.put("/updateBranch/:id", async (req, res) => {
