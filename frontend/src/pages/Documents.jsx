@@ -36,7 +36,25 @@ const Documents = () => {
       <div>
         <FileTable fileDirectory="annualReports" category="Annual Reports"/>
       </div>
+      <div>
+        <FileTable fileDirectory="customerInformation" category="Customer Information"/>
       </div>
+      <div>
+        <FileTable fileDirectory="customerProtectionFramework" category="Customer Protection Framework"/>
+      </div>
+      <div>
+        <FileTable fileDirectory="interiemFinancials" category="Interiem Financials"/>
+      </div>
+      <div>
+        <FileTable fileDirectory="luckewalletTutes" category="Luckewallet Tutes"/>
+      </div>
+      <div>
+        <FileTable fileDirectory="otherRelatedDocs" category="Other Related Documents"/>
+      </div>
+      <div>
+        <FileTable fileDirectory="promotions" category="promotions Page"/>
+      </div>
+    </div>
   )
 }
 

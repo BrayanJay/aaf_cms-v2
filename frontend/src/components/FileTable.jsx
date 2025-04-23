@@ -186,10 +186,10 @@ const FileTable = ({fileDirectory, category}) => {
         <tbody>
           {files.map((file, idx) => (
             <tr key={idx} className="border-t">
-              <td className="px-3 py-2">{file.fileName}</td>
-              <td className="px-3 py-2">{file.path}</td>
-              <td className="px-3 py-2">{new Date(file.updatedAt).toLocaleString()}</td>
-              <td className="px-3 py-2 text-center">
+              <td className="px-3 py-2 min-w-44 max-w-48 whitespace-normal break-words">{file.fileName}</td>
+              <td className="px-3 py-2 min-w-80 max-w-96 whitespace-normal break-words">{file.path}</td>
+              <td className="px-3 py-2 max-w-40">{new Date(file.updatedAt).toLocaleString()}</td>
+              <td className="px-3 py-2 text-center max-w-36">
                 <button
                   className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2"
                   onClick={() => handleUpdateClick(file)}

@@ -47,25 +47,25 @@ const ProfileData = ({id, tokenUrl}) => {
             <ProfilePictureUpload tokenUrl={tokenUrl} id={id}/>
           <label className="text-blue-600 font-normal text-base">Profile Details</label>
 
-            <table className="table mt-2">
-                    <thead>
-                        <tr className="bg-blue-400 text-white">
-                            <th className="rounded-tl-lg py-2 px-2">Profile ID</th>
-                            <th className="border-x-2 border-blue-300 px-2">Name</th>
-                            <th className="border-x-2 border-blue-300 px-2">Designation</th>
-                            <th className="border-x-2 border-blue-300 px-2">Description</th>
-                            <th className="rounded-tr-lg px-2">Actions</th>
+            <table className="w-full table-auto border">
+                    <thead className='bg-blue-200'>
+                        <tr className="">
+                            <th className="px-3 py-2 text-left min-w-24">Profile ID</th>
+                            <th className="px-3 py-2 text-left min-w-32">Name</th>
+                            <th className="px-3 py-2 text-left">Designation</th>
+                            <th className="px-3 py-2 text-left">Description</th>
+                            <th className="px-3 py-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.length > 0 ? (
                           data.map( (profile, index) => (
                             <tr className='h-full odd:bg-blue-50 even:bg-blue-100 col-span-6' key={index}>
-                              <th className="px-5 text-center">{profile.profile_id}</th>
-                                <td className="py-2 px-2">{profile.profile_name}</td>
-                                <td className="py-2 px-2">{profile.designation}</td>
+                              <th className="py-2 px-3 text-center">{profile.profile_id}</th>
+                                <td className="py-2 px-3">{profile.profile_name}</td>
+                                <td className="py-2 px-3">{profile.designation}</td>
                                  {/* ✅ Display JSON array properly */}
-                                <td className="py-2 px-2">
+                                <td className="py-2 px-3">
                                   <div className='flex flex-col gap-y-5'>
                                   {profile.description.map((desc, i) => (
                                     <div key={i} className="flex items-center">
@@ -75,15 +75,17 @@ const ProfileData = ({id, tokenUrl}) => {
                                   </div>
                                   
                                 </td>
-                                <td className="flex items-center justify-center space-x-2 py-2 h-full px-2">
-                                  <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200" 
-                                    onClick={() => handleUpdateClick(profile)}>
-                                    Edit
-                                  </button>
-                                  <button className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200"
-                                    onClick={() => handleRemoveClick(profile)}>
-                                    <Trash2/>
-                                  </button>
+                                <td className="px-3 py-2 text-center min-w-36">
+                                  <div className='flex flex-row justify-center items-center'>
+                                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2" 
+                                      onClick={() => handleUpdateClick(profile)}>
+                                      Edit
+                                    </button>
+                                    <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                                      onClick={() => handleRemoveClick(profile)}>
+                                      <Trash2/>
+                                    </button>
+                                  </div>
                                 </td>
                             </tr>
                             

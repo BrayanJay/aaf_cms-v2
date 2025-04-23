@@ -39,28 +39,28 @@ const ProductDescription = ({table_name, tokenUrl}) => {
   return (
         <div>
             <label className="text-blue-800 font-semibold text-xl">Product Description</label>
-            <table className="table mt-2">
-                    <thead>
-                        <tr className="bg-blue-400 text-white">
-                            <th className="rounded-tl-lg">Content</th>
-                            <th className="border-x-2 border-blue-300 px-2">Language</th>
-                            <th className="border-x-2 border-blue-300">Current Value</th>
-                            <th className="rounded-tr-lg">Actions</th>
+            <table className="w-full table-auto border">
+                    <thead className='bg-blue-200'>
+                        <tr>
+                            <th className="px-3 py-2 text-left min-w-24">Content</th>
+                            <th className="px-3 py-2 text-left">Language</th>
+                            <th className="px-3 py-2 text-left">Current Value</th>
+                            <th className="px-3 py-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.length > 0 ? (
                           data.map( (product, index) => (
-                            <tr className='h-full odd:bg-blue-50 even:bg-blue-100' key={index}>
-                              <th className="px-5 text-center">Description</th>
-                                <td className="px-5 text-center font-semibold">{product.lang}</td>
-                                <td className="py-2 px-2">{product.description}</td>
-                                <td className="flex items-center justify-center space-x-2 py-2 h-full px-2">
-                                  <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200" 
+                            <tr className=' odd:bg-blue-50 even:bg-blue-100' key={index}>
+                              <th className="py-2 px-3">Description</th>
+                                <td className="py-2 px-3">{product.lang}</td>
+                                <td className="py-2 px-3 max-w-96">{product.description}</td>
+                                <td className="px-3 py-2 text-center min-w-36">
+                                  <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2" 
                                     onClick={() => handleUpdateClick(product)}>
                                     Update
                                   </button>
-                                  <button className="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-1.5 px-2 rounded-md transition duration-200"
+                                  <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                                     onClick={() => handleRemoveClick(product)}>
                                     Remove
                                   </button>

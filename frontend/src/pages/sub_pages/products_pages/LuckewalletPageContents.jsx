@@ -70,19 +70,19 @@ function LuckewalletPageContents() {
       <div className="w-full m-10 px-20">
         <form>
           <label className="text-blue-800 font-semibold text-xl">Carousel</label>
-          <table className="w-full mt-2">
-            <thead>
-              <tr className="bg-blue-500 text-white">
-                <th className="px-4 py-3 text-left rounded-tl-lg">Slide</th>
-                <th className="border-x-2 border-blue-300 px-4 py-3 text-left">File</th>
-                <th className="px-4 py-3 text-left rounded-tr-lg">Action</th>
+          <table className="w-full table-auto border">
+            <thead className='bg-blue-200'>
+              <tr>
+                <th className="px-3 py-2 text-left min-w-24">Slide</th>
+                <th className="px-3 py-2 text-left">File</th>
+                <th className="px-3 py-2 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
               {[1].map((num) => (
                 <tr key={num} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
-                  <td className="px-4 py-1 font-medium text-gray-800">Slide 0{num}</td>
-                  <td className="px-4 py-2 border-x-2 border-white">
+                  <td className="py-2 px-3">Slide 0{num}</td>
+                  <td className="py-2 px-3">
                     <input
                       id={`slide${num}`}
                       type="file"
@@ -90,17 +90,17 @@ function LuckewalletPageContents() {
                       className="w-full text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                     />
                   </td>
-                  <td className="flex justify-center items-center px-4 py-2 space-x-3">
+                  <td className="px-3 py-2 text-center min-w-36">
                     <button
                       type="button"
-                      className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2"
                       onClick={() => handleUpload(num)}
                     >
                       Upload
                     </button>
                     <button
                       type="button"
-                      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                       onClick={() => handleClear(num)}
                     >
                       Clear

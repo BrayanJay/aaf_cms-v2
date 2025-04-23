@@ -89,12 +89,12 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
       <div className="flex flex-col gap-10 w-full">
       <form>
           <label className="text-blue-600 font-normal text-base">Profile Picture</label>
-          <table className="w-full mt-2">
-            <tbody>
+          <table className="w-full table-auto border">
+            <tbody className="bg-blue-50">
               {[id].map((num) => (
-                <tr key={num} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
-                  <td className="px-4 py-1 font-medium text-gray-800">Profile {num}</td>
-                  <td className="px-4 py-2 border-x-2 border-white">
+                <tr key={num} className="border-t">
+                  <td className="px-3 py-2 min-w-44 max-w-48">Profile {num}</td>
+                  <td className="px-3 py-2">
                     <input
                       id={`profile${num}`}
                       type="file"
@@ -102,17 +102,15 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
                       className="w-full text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                     />
                   </td>
-                  <td className="flex justify-end items-center px-4 py-2 space-x-3">
+                  <td className="px-3 py-2 text-end max-w-36">
                     <button
-                      type="button"
-                      className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2"
                       onClick={() => handleUpload(num)}
                     >
                       Upload
                     </button>
                     <button
-                      type="button"
-                      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                       onClick={() => handleClear(num)}
                     >
                       Clear

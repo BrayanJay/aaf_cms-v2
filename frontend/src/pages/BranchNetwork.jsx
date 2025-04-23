@@ -142,9 +142,9 @@ const BranchNetwork = () => {
     const res = await axios.post(`http://localhost:3000/data/addBranch`, 
       { 
         branch_details: [
-          { lang: "en", branch_name: branchNameEn, region: regionEn, address: addressEn },
-          { lang: "si", branch_name: branchNameSi, region: regionSi, address: addressSi },
-          { lang: "ta", branch_name: branchNameTa, region: regionTa, address: addressTa }
+          { lang: "en", branch_name: branchNameEn, region_name: regionEn, address: addressEn },
+          { lang: "si", branch_name: branchNameSi, region_name: regionSi, address: addressSi },
+          { lang: "ta", branch_name: branchNameTa, region_name: regionTa, address: addressTa }
         ]
       }, 
       { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }

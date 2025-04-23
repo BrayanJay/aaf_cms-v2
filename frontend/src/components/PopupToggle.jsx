@@ -94,12 +94,12 @@ function PopupToggle({tokenUrl}) {
         <div className="flex flex-col pt-2">
         <form>
           <label className="text-blue-600 font-normal text-base">Popup Flyer</label>
-          <table className="w-full mt-2">
+          <table className="w-full table-auto border mt-2">
             <tbody>
               {["Popup"].map((num) => (
                 <tr key={num} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
-                  <td className="px-4 py-1 font-medium text-gray-800">{num} Flyer</td>
-                  <td className="px-4 py-2 border-x-2 border-white">
+                  <td className="py-2 px-3 text-left min-w-48">{num} Flyer</td>
+                  <td className="py-2 px-3 text-left min-w-80 ">
                     <input
                       id={num}
                       type="file"
@@ -107,17 +107,15 @@ function PopupToggle({tokenUrl}) {
                       className="w-full text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                     />
                   </td>
-                  <td className="flex justify-end items-center px-4 py-2 space-x-3">
+                  <td className="px-3 py-2 text-center min-w-36">
                     <button
-                      type="button"
-                      className="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2"
                       onClick={() => handleUpload(num)}
                     >
                       Upload
                     </button>
                     <button
-                      type="button"
-                      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-md transition duration-200"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                       onClick={() => handleClear(num)}
                     >
                       Clear

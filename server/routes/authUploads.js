@@ -535,7 +535,7 @@ router.put("/updateBranch/:id", async (req, res) => {
   let db;
   try {
     db = await connectToDatabase();
-    const [branchDetails] = await db.query("UPDATE branch_details SET branch_name = ?, region = ?, address = ? WHERE branch_id = ? AND lang = ?", [branch_name, region, address, id, lang]);
+    const [branchDetails] = await db.query("UPDATE branch_details SET branch_name = ?, region_name = ?, address = ? WHERE branch_id = ? AND lang = ?", [branch_name, region, address, id, lang]);
     const [coordinates] = await db.query("UPDATE branch_coordinates SET longitude = ?, latitude = ? WHERE branch_id = ?", [longitude, latitude, id]);
     const [contacts] = await db.query("UPDATE branch_contacts SET contact_number = ? WHERE branch_id = ?", [contact, id]);
     
@@ -583,7 +583,7 @@ router.post("/addBranch", async (req, res) => {
     const values = branch_details.map(({ lang, branch_name, region, address }) => [newBranchId, branch_name, region, address, lang]);
     
     await db.query(
-      "INSERT INTO branch_details (branch_id, branch_name, region, address, lang) VALUES ?", 
+      "INSERT INTO branch_details (branch_id, branch_name, region_name, address, lang) VALUES ?", 
       [values]
     );
 
