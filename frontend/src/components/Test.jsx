@@ -1,141 +1,92 @@
-import { useState } from "react";
-import { Trash2 } from "lucide-react";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from "prop-types";
 
-export default function Test() {
-  const [name, setName] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [description, setDescription] = useState([""]);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+const Test = ({ tokenUrl }) => {
+  const [toggle, setToggle] = useState(null);
+  const navigate = useNavigate();
 
-  // Add new description field
-  const handleAddDescription = () => {
-    setDescription([...description, ""]);
-  };
+  const token = localStorage.getItem('token');
 
-  // Update description array
-  const handleDescriptionChange = (index, value) => {
-    const newDescription = [...description];
-    newDescription[index] = value;
-    setDescription(newDescription);
-  };
-
-  // Remove a description field
-  const handleRemoveDescription = (index) => {
-    if (description.length > 1) {
-      setDescription(description.filter((_, i) => i !== index));
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get(tokenUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status !== 201) {
+        navigate('/login');
+      }
+    } catch (err) {
+      console.log(err);
+      navigate('/login');
     }
   };
 
-  // Submit form
+  const fetchInitialToggleState = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/data/getPopup');
+      setToggle(response.data.status);
+    } catch (err) {
+      console.error('Error fetching toggle state:', err);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
-    const payload = {
-      profile_name: name,
-      designation: designation,
-      description: description,
-    };
-
     try {
-      const response = await fetch("http://localhost:3000/data/api/profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setMessage("Profile saved successfully!");
-        setName("");
-        setDesignation("");
-        setDescription([""]); // Reset form
-      } else {
-        setMessage("Error: " + result.error);
-      }
-    } catch (error) {
-      setMessage("Failed to save profile.");
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+      await axios.put('http://localhost:3000/data/updatePopup', 
+        { status: toggle },
+        { headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } }
+    );
+      alert('Toggle state updated successfully');
+    } catch (err) {
+      console.error('Error updating toggle state:', err);
     }
   };
 
+  useEffect(() => {
+    fetchUser();
+    fetchInitialToggleState();
+  }, []);
+
   return (
-    <div className="max-w-md mx-auto p-4 bg-white shadow-lg rounded-xl">
-      <h2 className="text-xl font-bold mb-4">Profile Form</h2>
-      {message && <p className="mb-4 text-center font-semibold">{message}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name Input */}
-        <div>
-          <label className="block font-semibold">Name:</label>
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-4 bg-white p-4 rounded shadow-md w-fit"
+    >
+      <label className="flex items-center cursor-pointer">
+        <span className="mr-2 text-gray-700">Enable Popup</span>
+        <div className="relative">
           <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter your name"
-            required
+            type="checkbox"
+            checked={toggle}
+            onChange={() => setToggle(!toggle)}
+            className="sr-only"
           />
+          <div className={`block w-14 h-8 rounded-full ${toggle ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+          <div
+            className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${
+              toggle ? 'transform translate-x-6' : ''
+            }`}
+          ></div>
         </div>
-
-        {/* Designation Input */}
-        <div>
-          <label className="block font-semibold">Designation:</label>
-          <input
-            type="text"
-            value={designation}
-            onChange={(e) => setDesignation(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter your designation"
-            required
-          />
-        </div>
-
-        {/* Description Section */}
-        <div>
-          <label className="block font-semibold">Description:</label>
-          {description.map((desc, index) => (
-            <div key={index} className="flex items-center gap-2 mb-2">
-              <textarea
-                value={desc}
-                onChange={(e) => handleDescriptionChange(index, e.target.value)}
-                className="w-full p-2 border rounded"
-                placeholder="Enter description"
-                required
-              />
-              {description.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => handleRemoveDescription(index)}
-                  className="p-2 text-red-500 hover:text-red-700"
-                >
-                  <Trash2 size={20} />
-                </button>
-              )}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddDescription}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Add New Line
-          </button>
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
-          disabled={loading}
-        >
-          {loading ? "Saving..." : "Submit"}
-        </button>
-      </form>
-    </div>
+      </label>
+      <button
+        type="submit"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+      >
+        Submit
+      </button>
+    </form>
   );
-}
+};
+
+
+Test.propTypes = {
+  tokenUrl: PropTypes.string.isRequired,
+};
+
+export default Test;

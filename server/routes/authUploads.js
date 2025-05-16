@@ -616,7 +616,57 @@ router.post("/popup-state", (req, res) => {
     res.json({ message: "Popup state updated", popupEnabled });
 });
 
+
 // ------------------------------- TEST APIs ------------------------------------------ //
+
+// GET toggle state
+router.get('/getPopup', async (req, res) => {
+
+  let db;
+  try {
+    db = await connectToDatabase();
+    const [result] = await db.query('SELECT status FROM popup_status WHERE id = 1');
+    if (result.length > 0) {
+      res.json(result[0]);
+    } else {
+      res.status(404).json({ message: 'Not found' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT toggle state
+router.put('/updatePopup', verifyToken, async (req, res) => {
+  const { status } = req.body;
+  console.log("Received PUT request with:", { status });
+  
+  if (typeof status !== 'boolean') {
+  return res.status(400).json({ error: 'Invalid input' });
+  }
+
+  let db;
+  try {
+    db = await connectToDatabase();
+
+    const [userRows] = await db.query("SELECT username FROM users WHERE id = ?", [req.userId]);
+    if (userRows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const updated_by = userRows[0].username;
+    
+    await db.query(
+      'UPDATE popup_status SET status = ?, updated_by = ? WHERE id = 1',
+      [status, updated_by]
+    );
+    
+    res.json({ message: 'Updated successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Update failed' });
+  }
+});
 
 
 // ------------------------------- WEBSITE APIs ------------------------------------------ //

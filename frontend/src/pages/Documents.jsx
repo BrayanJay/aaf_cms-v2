@@ -52,7 +52,7 @@ const Documents = () => {
         <FileTable fileDirectory="otherRelatedDocs" category="Other Related Documents"/>
       </div>
       <div>
-        <FileTable fileDirectory="promotions" category="promotions Page"/>
+        <FileTable fileDirectory="promotions" category="Promotions Page"/>
       </div>
     </div>
   )

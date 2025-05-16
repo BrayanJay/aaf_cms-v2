@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupToggle from "../../components/PopupToggle";
+import Test from "../../components/Test";
 
 function LandingPageContents() {
   
@@ -113,7 +114,8 @@ function LandingPageContents() {
           </table>
         </form>
         <div className="flex w-full">
-        <PopupToggle tokenUrl={tokenUrl}/>   
+        {/* <PopupToggle tokenUrl={tokenUrl}/> */}
+        <Test tokenUrl={tokenUrl}/>  
       </div>
       </div>
     </div>
