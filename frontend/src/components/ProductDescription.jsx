@@ -14,7 +14,7 @@ const ProductDescription = ({table_name, tokenUrl}) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const res = await axios.get(`http://localhost:3000/data/read/${table_name}`);
+            const res = await axios.get(`http://localhost:3000/product/read/${table_name}`);
             setData(Array.isArray(res.data) ? res.data : []);
           } catch (err) {
             console.log("Error fetching data:", err.message);

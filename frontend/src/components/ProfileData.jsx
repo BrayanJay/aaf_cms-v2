@@ -16,7 +16,7 @@ const ProfileData = ({id, tokenUrl}) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const res = await axios.get(`http://localhost:3000/data/read/profile/${id}`); //http://localhost/aaf-cms-backend/api/profiles.php?id=1
+            const res = await axios.get(`http://localhost:3000/profile/read/profile/${id}`); //http://localhost/aaf-cms-backend/api/profiles.php?id=1
             const updatedData = res.data.map(profile => ({
               ...profile,
               description: JSON.parse(profile.description || "[]"), // ✅ Parse JSON description

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PopupToggle from "../../components/PopupToggle";
-import Test from "../../components/Test";
+//import Test from "../../components/Test";
 
 function LandingPageContents() {
   
@@ -26,12 +26,8 @@ function LandingPageContents() {
     formData.append("file_directory", "media/landingPage"); // Custom File Path
   
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post("http://localhost:3000/data/upload", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+        withCredentials: true  // ✅ Send cookies/session info
       });
   
       alert(response.data.message);
@@ -49,13 +45,10 @@ function LandingPageContents() {
   
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await axios.get(tokenUrl, {
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
+        withCredentials: true  // ✅ Send cookies/session info
       })
-      if(response.status !== 201) {
+      if(response.status !== 200) {
         navigate('/login')
       }
     } catch(err){
@@ -114,8 +107,8 @@ function LandingPageContents() {
           </table>
         </form>
         <div className="flex w-full">
-        {/* <PopupToggle tokenUrl={tokenUrl}/> */}
-        <Test tokenUrl={tokenUrl}/>  
+        <PopupToggle tokenUrl={tokenUrl}/>
+        {/* <Test tokenUrl={tokenUrl}/>   */}
       </div>
       </div>
     </div>

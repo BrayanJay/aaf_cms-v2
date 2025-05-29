@@ -42,10 +42,9 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
         formData.append("file_directory", "media/aboutPage/profiles"); // ../../../../asiaassetfinance/src/media/aboutPage/profiles/
       
         try {
-          const token = localStorage.getItem("token");
           const response = await axios.post("http://localhost:3000/data/upload", formData, {
+            withCredentials: true,
             headers: {
-              Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
             },
           });
@@ -65,15 +64,9 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
       const navigate = useNavigate()
       const fetchUser = async () => {
         try {
-          const token = localStorage.getItem('token')
           const response = await axios.get(tokenUrl, {
-            headers: {
-              "Authorization" : `Bearer ${token}`
-            }
+            withCredentials: true
           })
-          if(response.status !== 201) {
-            navigate('/login')
-          }
         } catch(err){
           navigate('/login')
           console.log(err)

@@ -10,13 +10,28 @@ function UploadFile() {
     setFiles({ ...files, [num]: e.target.files[0] });
   };
 
-  const handleUpload = (num) => {
-    if (files[num]) {
-      console.log(`Uploading file for Slide 0${num}:`, files[num]);
-      // Upload logic here...
-    } else {
-      alert(`No file selected for Slide 0${num}`);
-    }
+  const handleUpload = async (num) => {
+    if (!files[num]) {
+    alert(`No file selected for Slide 0${num}`);
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", files[num]); // Must match `upload.single("file")`
+  formData.append("filename", `carousel_slide0${num}.jpg`);
+  formData.append("file_directory", "media/landing_page_carousel");
+
+  try {
+    const response = await axios.post("http://localhost:3000/data/upload", formData, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    alert(response.data.message);
+    window.location.reload();
+  } catch (err) {
+    alert(`Upload failed: ${err.response?.data?.message || err.message}`);
+  }
   };
 
   const handleClear = (num) => {
@@ -27,15 +42,9 @@ function UploadFile() {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await axios.get('http://localhost:3000/auth/landingpagecontents', { //Change here
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
+        withCredentials: true,
       })
-      if(response.status !== 201) {
-        navigate('/login')
-      }
     } catch(err){
       navigate('/login')
       console.log(err)

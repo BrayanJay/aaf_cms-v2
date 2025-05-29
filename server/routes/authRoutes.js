@@ -1,118 +1,115 @@
 import express from 'express'
-import {connectToDatabase} from '../lib/db.js'
+import { connectToDatabase } from '../lib/db.js'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import 'dotenv/config';
+import crypto from 'crypto'
+import 'dotenv/config'
+import verifySessionToken from '../middleware/authToken.js'
 
 const router = express.Router()
 
+// REGISTER route
 router.post('/register', async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
 
     let db;
     try {
         db = await connectToDatabase()
         const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username])
-        if(rows.length > 0) {
-            return res.status(409).json({message : "user already existed"})
+        if (rows.length > 0) {
+            return res.status(409).json({ message: "User already exists" })
         }
-        const hashPassword = await bcrypt.hash(password, 10)
-        await db.query("INSERT INTO users (username, password) VALUES (?, ?)", 
-            [username, hashPassword])
-        
-        return res.status(201).json({message: "user created successfully"})
-    } catch(err) {
-        return res.status(500).json(err.message)
-
+        const hashedPassword = await bcrypt.hash(password, 10)
+        await db.query("INSERT INTO users (username, password) VALUES (?, ?)", [username, hashedPassword])
+        return res.status(201).json({ message: "User registered successfully" })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
     } finally {
-        if (db) db.release(); // ✅ Always release the connection
-      }
+        if (db) db.release()
+    }
 })
 
+// LOGIN route
 router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ message: "Username and password are required" })
+    }
 
     let db;
     try {
         db = await connectToDatabase()
         const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username])
-        if(rows.length === 0) {
-            return res.status(404).json({message : "user not existed"})
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "User not found" })
         }
-        const isMatch = await bcrypt.compare(password, rows[0].password)
-        if(!isMatch) {
-            return res.status(401).json({message : "wrong password"})
-        }
-        const token = jwt.sign({id: rows[0].id}, process.env.JWT_KEY, {expiresIn: '3h'})
-        
-        return res.status(201).json({token: token})
-    } catch(err) {
-        return res.status(500).json(err.message)
 
+        const user = rows[0]
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            return res.status(401).json({ message: "Incorrect password" })
+        }
+
+        const sessionToken = crypto.randomBytes(64).toString('hex')
+
+        // Save token in session and database
+        req.session.userId = user.id
+        req.session.token = sessionToken
+        await db.query('UPDATE users SET token = ? WHERE id = ?', [sessionToken, user.id])
+
+        return res.status(200).json({ message: "Login successful" })
+    } catch (err) {
+        console.error("Login eroor: ", err)
+        return res.status(500).json({ message: err.message })
     } finally {
-        if (db) db.release(); // ✅ Always release the connection
-      }
+        if (db) db.release()
+    }
 })
 
-
-
-// This function is used to verify the token (user)
-
-const verifyToken = async (req, res, next) => {
-    try {
-        const token = req.headers['authorization'].split(' ')[1];
-        if(!token) {
-            return res.status(403).json({message: "No Token Provided"})
+//Logout Route
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
         }
-        const decoded = jwt.verify(token, process.env.JWT_KEY)
-        req.userId = decoded.id;
-        next()
-    }  catch(err) {
-        return res.status(500).json({message: "server error"})
+        res.clearCookie('connect.sid'); // Default session cookie name
+        return res.status(200).json({ message: 'Logged out successfully' });
+    });
+});
+
+// Helper to fetch user info
+const getUserData = async (req, res, page) => {
+    let db;
+    try {
+        db = await connectToDatabase()
+        const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [req.session.userId])
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "User not found" })
+        }
+        return res.status(200).json({ page, user: rows[0] })
+    } catch (err) {
+        return res.status(500).json({ message: "Server error" })
+    } finally {
+        if (db) db.release()
     }
 }
 
-// Protected routes ---- Start ---------------------------------------------------------------- //
+// PROTECTED ROUTES
+router.get('/home', verifySessionToken, (req, res) => getUserData(req, res, 'home'))
+router.get('/uploadspage', verifySessionToken, (req, res) => getUserData(req, res, 'uploadspage'))
+router.get('/landingpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'landingpagecontents'))
+router.get('/aboutpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'aboutpagecontents'))
+router.get('/productspagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'productspagecontents'))
+router.get('/investorrelationspagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'investorrelationspagecontents'))
+router.get('/careerspagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'careerspagecontents'))
+router.get('/contactpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'contactpagecontents'))
+router.get('/goldloanpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'goldloanpagecontents'))
+router.get('/fixeddepositspagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'fixeddepositspagecontents'))
+router.get('/leasingpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'leasingpagecontents'))
+router.get('/mortgagepagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'mortgagepagecontents'))
+router.get('/forexpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'forexpagecontents'))
+router.get('/luckewalletpagecontents', verifySessionToken, (req, res) => getUserData(req, res, 'luckewalletpagecontents'))
+router.get('/branchdetails', verifySessionToken, (req, res) => getUserData(req, res, 'branchdetails'))
+router.get('/documents', verifySessionToken, (req, res) => getUserData(req, res, 'documents'))
 
-const getUserData = async (req, res, page) => {
-
-    let db;
-    try {
-        db = await connectToDatabase();
-        const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [req.userId]);
-        if (rows.length === 0) {
-            return res.status(404).json({ message: "user not existed" });
-        }
-        return res.status(201).json({ page, user: rows[0] });
-    } catch (err) {
-        return res.status(500).json({ message: "server error" });
-
-    } finally {
-        if (db) db.release(); // ✅ Always release the connection
-      }
-};
-
-router.get('/home', verifyToken, (req, res) => getUserData(req, res, 'home'));
-router.get('/uploadspage', verifyToken, (req, res) => getUserData(req, res, 'uploadspage'));
-router.get('/landingpagecontents', verifyToken, (req, res) => getUserData(req, res, 'landingpagecontents'));
-router.get('/aboutpagecontents', verifyToken, (req, res) => getUserData(req, res, 'aboutpagecontents'));
-router.get('/productspagecontents', verifyToken, (req, res) => getUserData(req, res, 'productspagecontents'));
-router.get('/investorrelationspagecontents', verifyToken, (req, res) => getUserData(req, res, 'investorrelationspagecontents'));
-router.get('/careerspagecontents', verifyToken, (req, res) => getUserData(req, res, 'careerspagecontents'));
-router.get('/contactpagecontents', verifyToken, (req, res) => getUserData(req, res, 'contactpagecontents'));
-
-router.get('/goldloanpagecontents', verifyToken, (req, res) => getUserData(req, res, 'goldloanpagecontents'));
-router.get('/fixeddepositspagecontents', verifyToken, (req, res) => getUserData(req, res, 'fixeddepositspagecontents'));
-router.get('/leasingpagecontents', verifyToken, (req, res) => getUserData(req, res, 'leasingpagecontents'));
-router.get('/mortgagepagecontents', verifyToken, (req, res) => getUserData(req, res, 'mortgagepagecontents'));
-router.get('/forexpagecontents', verifyToken, (req, res) => getUserData(req, res, 'forexpagecontents'));
-router.get('/luckewalletpagecontents', verifyToken, (req, res) => getUserData(req, res, 'luckewalletpagecontents'));
-
-router.get('/branchdetails', verifyToken, (req, res) => getUserData(req, res, 'branchdetails'));
-router.get('/documents', verifyToken, (req, res) => getUserData(req, res, 'documents'));
-
-
-// Protected routes ---- End ---------------------------------------------------------------- //
-
-
-export default router;
+export default router

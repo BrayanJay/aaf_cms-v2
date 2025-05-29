@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Test from "../../components/Test";
 
 function CareersPageContents() {
     
@@ -22,10 +23,9 @@ function CareersPageContents() {
     formData.append("file_directory", "media/careersPage"); // Custom File Path
   
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post("http://localhost:3000/data/upload", formData, {
+        withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
@@ -44,15 +44,9 @@ function CareersPageContents() {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:3000/auth/careerspagecontents', {
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
+      await axios.get('http://localhost:3000/auth/careerspagecontents', {
+        withCredentials: true,
       })
-      if(response.status !== 201) {
-        navigate('/login')
-      }
     } catch(err){
       navigate('/login')
       console.log(err)
@@ -107,6 +101,8 @@ function CareersPageContents() {
             </tbody>
           </table>
         </form>
+
+        <Test fileName="bannerCareer.webp" file_directory="/careersPage" />
       </div>
     </div>
   );

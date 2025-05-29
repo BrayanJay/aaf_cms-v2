@@ -7,15 +7,9 @@ function ProductsPageContents() {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await axios.get('http://localhost:3000/auth/productspagecontents', {
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
+        withCredentials: true,
       })
-      if(response.status !== 201) {
-        navigate('/login')
-      }
     } catch(err){
       navigate('/login')
       console.log(err)

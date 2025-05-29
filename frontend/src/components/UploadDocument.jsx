@@ -25,12 +25,9 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath,  documen
     formData.append("file_directory", `media/attachments/${filePath}`);
 
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post("http://localhost:3000/data/upload", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+        withCredentials: true,
+        headers: {"Content-Type": "multipart/form-data"},
       });
       window.location.reload();
       alert(response.data.message);
@@ -48,15 +45,10 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath,  documen
     const navigate = useNavigate()
     const fetchUser = async () => {
         try {
-        const token = localStorage.getItem('token')
         const response = await axios.get(tokenUrl, {
-            headers: {
-            "Authorization" : `Bearer ${token}`
-            }
+            withCredentials: true,
         })
-        if(response.status !== 201) {
-            navigate('/login')
-        }
+        console.log(response.data)
         } catch(err){
         navigate('/login')
         console.log(err)
@@ -73,7 +65,7 @@ const UploadDocument = ({tokenUrl, documentNameWithExtention, filePath,  documen
         <label className="text-blue-600 font-semibold text-base pt-2">Annual Reports</label>
           <table className="w-full mt-2">
             <tbody>
-              {[{documentName}].map((key) => (
+              {[documentName].map((key) => (
                 <tr key={key} className="odd:bg-blue-50 even:bg-blue-100 transition duration-200">
                   <td className="px-4 py-1 font-medium text-gray-800">{documentName}</td>
                   <td className="px-4 py-2 border-x-2 border-white">

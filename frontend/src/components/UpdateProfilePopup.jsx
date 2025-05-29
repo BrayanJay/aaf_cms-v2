@@ -16,12 +16,9 @@ function UpdateProfilePopup ({ isOpen, onClose, initialLang, initialProfile_name
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-        //console.log("Token: ", token);
         const response = await axios.get(tokenUrl, {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true 
         });
-        if (response.status !== 201) navigate("/login");
       } catch (err) {
         navigate("/login");
         console.log(err);
@@ -43,10 +40,10 @@ function UpdateProfilePopup ({ isOpen, onClose, initialLang, initialProfile_name
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:3000/data/update/profile/${id}`, //http://localhost/aaf-cms-backend/api/update_profile.php?id=${id}
+      const res = await axios.put(`http://localhost:3000/profile/update/profile/${id}`, //http://localhost/aaf-cms-backend/api/update_profile.php?id=${id}
         { profile_name, designation, description, lang: initialLang }, 
-        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+        { withCredentials: true, headers: { "Content-Type": "application/json" } }
+        
       );
       console.log(res)
       setprofile_name("");
@@ -95,9 +92,6 @@ function UpdateProfilePopup ({ isOpen, onClose, initialLang, initialProfile_name
         {error && <p className="text-red-500">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-
-
-
           <div className="mb-4">
             <label className="block text-blue-700">Profile Name</label>
             <input
@@ -119,16 +113,6 @@ function UpdateProfilePopup ({ isOpen, onClose, initialLang, initialProfile_name
               required
             />
           </div>
-
-          {/*<div className="mb-4">
-            <label className="block text-gray-700">Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>*/}
 
           <div>
             <label className="block text-blue-700">Description:</label>

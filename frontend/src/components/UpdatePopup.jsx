@@ -14,12 +14,9 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-        //console.log("Token: ", token);
         const response = await axios.get(tokenUrl, {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         });
-        if (response.status !== 201) navigate("/login");
       } catch (err) {
         navigate("/login");
         console.log(err);
@@ -41,10 +38,9 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:3000/data/update/${table_name}`, 
+      const res = await axios.put(`http://localhost:3000/product/update/${table_name}`, 
         { description, lang }, 
-        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+        { withCredentials: true }
       );
 
       setDescription(""); 

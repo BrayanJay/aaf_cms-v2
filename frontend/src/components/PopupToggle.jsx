@@ -8,7 +8,7 @@ function PopupToggle({tokenUrl}) {
 
   // Fetch popup state on load
   useEffect(() => {
-    axios.get("http://localhost:3000/data/popup-state")
+    axios.get("http://localhost:3000/popup/popup-state")
       .then(response => setPopupEnabled(response.data.popupEnabled))
       .catch(error => console.error("Error fetching popup state:", error));
   }, []);
@@ -16,7 +16,7 @@ function PopupToggle({tokenUrl}) {
   // Handle toggle switch
   const handleToggle = () => {
     const newState = !popupEnabled;
-    axios.post("http://localhost:3000/data/popup-state", { enabled: newState })
+    axios.post("http://localhost:3000/popup/popup-state", { enabled: newState })
       .then(() => setPopupEnabled(newState))
       .catch(error => console.error("Error updating popup state:", error));
   };
@@ -40,10 +40,9 @@ function PopupToggle({tokenUrl}) {
     formData.append("file_directory", "media/uploads");
 
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post("http://localhost:3000/data/upload", formData, {
+        withCredentials: true ,
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
@@ -63,15 +62,9 @@ function PopupToggle({tokenUrl}) {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await axios.get(tokenUrl, {
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
+        withCredentials: true 
       })
-      if(response.status !== 201) {
-        navigate('/login')
-      }
     } catch(err){
       navigate('/login')
       console.log(err)
@@ -135,7 +128,6 @@ function PopupToggle({tokenUrl}) {
 }
 
 PopupToggle.propTypes = {
-  id: PropTypes.number.isRequired,
   tokenUrl: PropTypes.string.isRequired,
 };
 

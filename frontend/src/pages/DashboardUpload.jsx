@@ -1,3 +1,6 @@
+// ------------------------------------ Update Working Status Here ------------------------------------
+//Working Fine - updated on 27/05/2025
+
 import axios from "axios";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,21 +9,16 @@ const DashboardUpload = () => {
 
   const navigate = useNavigate()
   const fetchUser = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:3000/auth/uploadspage', {
-        headers: {
-          "Authorization" : `Bearer ${token}`
-        }
-      })
-      if(response.status !== 201) {
-        navigate('/login')
-      }
-    } catch(err){
-      navigate('/login')
-      console.log(err)
-    }
+  try {
+    const response = await axios.get('http://localhost:3000/auth/uploadspage', {
+      withCredentials: true  // ✅ Send cookies/session info
+    });
+  
+  } catch (err) {
+    navigate('/login');
+    console.log(err);
   }
+};
 
   useEffect(() => {
     fetchUser()

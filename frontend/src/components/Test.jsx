@@ -1,92 +1,57 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from "prop-types";
+import { useState } from "react";
+import axios from "axios";
 
-const Test = ({ tokenUrl }) => {
-  const [toggle, setToggle] = useState(null);
-  const navigate = useNavigate();
+const Test = ({ fileName, file_directory }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [status, setStatus] = useState("");
 
-  const token = localStorage.getItem('token');
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
-  const fetchUser = async () => {
+  const handleUpload = async () => {
+    if (!selectedFile) {
+      setStatus("Please select a file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("filename", fileName);
+    formData.append("file_directory", file_directory);
+
     try {
-      const response = await axios.get(tokenUrl, {
+      const response = await axios.post("http://localhost:3000/data/upload", formData, {
+        withCredentials: true, // Required to send httpOnly cookies
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       });
-      if (response.status !== 201) {
-        navigate('/login');
-      }
-    } catch (err) {
-      console.log(err);
-      navigate('/login');
+
+      setStatus(`✅ Upload successful: ${response.data.filePath}`);
+    } catch (error) {
+      console.error("Upload error:", error);
+      setStatus("❌ Upload failed. Please check console.");
     }
   };
-
-  const fetchInitialToggleState = async () => {
-    try {
-      const response = await axios.get('http://localhost:3000/data/getPopup');
-      setToggle(response.data.status);
-    } catch (err) {
-      console.error('Error fetching toggle state:', err);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put('http://localhost:3000/data/updatePopup', 
-        { status: toggle },
-        { headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } }
-    );
-      alert('Toggle state updated successfully');
-    } catch (err) {
-      console.error('Error updating toggle state:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-    fetchInitialToggleState();
-  }, []);
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-center gap-4 bg-white p-4 rounded shadow-md w-fit"
-    >
-      <label className="flex items-center cursor-pointer">
-        <span className="mr-2 text-gray-700">Enable Popup</span>
-        <div className="relative">
-          <input
-            type="checkbox"
-            checked={toggle}
-            onChange={() => setToggle(!toggle)}
-            className="sr-only"
-          />
-          <div className={`block w-14 h-8 rounded-full ${toggle ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-          <div
-            className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${
-              toggle ? 'transform translate-x-6' : ''
-            }`}
-          ></div>
-        </div>
-      </label>
+    <div className="p-4 border rounded shadow-md max-w-md">
+      <h2 className="text-lg font-semibold mb-2">Upload a File</h2>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="mb-2"
+      />
       <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        onClick={handleUpload}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
-        Submit
+        Upload
       </button>
-    </form>
+      {status && <p className="mt-2 text-sm">{status}</p>}
+    </div>
   );
-};
-
-
-Test.propTypes = {
-  tokenUrl: PropTypes.string.isRequired,
 };
 
 export default Test;
