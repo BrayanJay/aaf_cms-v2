@@ -60,13 +60,13 @@ const SystemLogs = () => {
 
   const getLevelColor = (level) => {
     const colors = {
-      INFO: 'bg-blue-100 text-blue-800',
-      WARN: 'bg-yellow-100 text-yellow-800',
-      ERROR: 'bg-red-100 text-red-800',
-      DEBUG: 'bg-gray-100 text-gray-800',
-      SECURITY: 'bg-purple-100 text-purple-800'
+      INFO: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+      WARN: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
+      ERROR: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+      DEBUG: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+      SECURITY: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300'
     };
-    return colors[level] || 'bg-gray-100 text-gray-800';
+    return colors[level] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const SystemLogs = () => {
   if (loading && logs.length === 0) {
     return (
       <div className="p-6 mt-20">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 dark:border-blue-400 mx-auto"></div>
       </div>
     );
   }
@@ -84,24 +84,24 @@ const SystemLogs = () => {
   return (
     <div className="p-4 md:p-6 pt-20 md:pt-24">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">System Logs</h1>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 transition-colors duration-300">System Logs</h1>
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-500 text-red-700 dark:text-red-200 px-4 py-3 rounded mb-4 transition-colors duration-300">
               {error}
             </div>
           )}
 
           {/* Filters */}
-          <div className="bg-gray-50 p-4 rounded-lg mb-6">
+          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6 transition-colors duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Level</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 transition-colors duration-300">Level</label>
                 <select
                   value={filters.level}
                   onChange={(e) => handleFilterChange('level', e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
                 >
                   <option value="">All Levels</option>
                   <option value="INFO">Info</option>
@@ -113,11 +113,11 @@ const SystemLogs = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 transition-colors duration-300">Category</label>
                 <select
                   value={filters.category}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
                 >
                   <option value="">All Categories</option>
                   <option value="API">API</option>
@@ -135,31 +135,31 @@ const SystemLogs = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 transition-colors duration-300">Start Date</label>
                 <input
                   type="date"
                   value={filters.startDate}
                   onChange={(e) => handleFilterChange('startDate', e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 transition-colors duration-300">End Date</label>
                 <input
                   type="date"
                   value={filters.endDate}
                   onChange={(e) => handleFilterChange('endDate', e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Limit</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1 transition-colors duration-300">Limit</label>
                 <select
                   value={filters.limit}
                   onChange={(e) => handleFilterChange('limit', e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300"
                 >
                   <option value={25}>25</option>
                   <option value={50}>50</option>
@@ -174,13 +174,13 @@ const SystemLogs = () => {
               <button
                 onClick={applyFilters}
                 disabled={loading}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-300 disabled:opacity-50"
               >
                 {loading ? 'Loading...' : 'Apply Filters'}
               </button>
               <button
                 onClick={clearFilters}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                className="bg-gray-500 dark:bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-300"
               >
                 Clear Filters
               </button>
@@ -189,56 +189,56 @@ const SystemLogs = () => {
 
           {/* Logs Table */}
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+              <thead className="bg-gray-50 dark:bg-gray-700 transition-colors duration-300">
                 <tr>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     Timestamp
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     Level
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     Category
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     User
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     Action
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     Message
                   </th>
-                  <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">
                     IP Address
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-300">
                 {logs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <tr key={log.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white transition-colors duration-300">
                       {new Date(log.timestamp).toLocaleString()}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getLevelColor(log.level)}`}>
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full transition-colors duration-300 ${getLevelColor(log.level)}`}>
                         {log.level}
                       </span>
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white transition-colors duration-300">
                       {log.category}
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white transition-colors duration-300">
                       {log.username || '-'}
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white transition-colors duration-300">
                       {log.action}
                     </td>
-                    <td className="px-4 py-4 text-sm text-gray-900 max-w-xs truncate">
+                    <td className="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs truncate transition-colors duration-300">
                       {log.message}
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
                       {log.ip_address || '-'}
                     </td>
                   </tr>
@@ -249,7 +249,7 @@ const SystemLogs = () => {
 
           {logs.length === 0 && !loading && (
             <div className="text-center py-12">
-              <p className="text-gray-500">No logs found with current filters.</p>
+              <p className="text-gray-500 dark:text-gray-400 transition-colors duration-300">No logs found with current filters.</p>
             </div>
           )}
         </div>

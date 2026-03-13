@@ -81,29 +81,29 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
     <div className="flex justify-center container my-4">
       <div className="flex flex-col gap-10 w-full">
       <form>
-          <label className="text-blue-600 font-normal text-base">Profile Picture</label>
-          <table className="w-full table-auto border">
-            <tbody className="bg-blue-50">
+          <label className="text-blue-600 dark:text-blue-400 font-normal text-base transition-colors duration-300">Profile Picture</label>
+          <table className="w-full table-auto border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden transition-colors duration-300">
+            <tbody className="bg-blue-50 dark:bg-blue-900/20 transition-colors duration-300">
               {[id].map((num) => (
-                <tr key={num} className="border-t">
-                  <td className="px-3 py-2 min-w-44 max-w-48">Profile {num}</td>
+                <tr key={num} className="border-t border-gray-300 dark:border-gray-600 transition-colors duration-300">
+                  <td className="px-3 py-2 min-w-44 max-w-48 text-gray-900 dark:text-white transition-colors duration-300">Profile {num}</td>
                   <td className="px-3 py-2">
                     <input
                       id={`profile${num}`}
                       type="file"
                       onChange={(e) => handleFile(e, num)}
-                      className="w-full text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                      className="w-full text-blue-700 dark:text-blue-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200"
                     />
                   </td>
                   <td className="px-3 py-2 text-end max-w-36">
                     <button
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2"
+                      className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white px-3 py-1 rounded mr-2 transition-colors duration-300"
                       onClick={() => handleUpload(num)}
                     >
                       Upload
                     </button>
                     <button
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                      className="bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700 text-white px-3 py-1 rounded transition-colors duration-300"
                       onClick={() => handleClear(num)}
                     >
                       Clear

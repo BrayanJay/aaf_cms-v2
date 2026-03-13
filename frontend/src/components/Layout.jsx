@@ -30,14 +30,14 @@ const Layout = () => {
   }, [location.pathname, isMobile]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {shouldShowSidebar && (
         <>
           {/* Mobile Sidebar Toggle Button */}
           {isMobile && (
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="fixed top-20 left-4 z-[60] bg-blue-600 text-white p-3 rounded-xl shadow-lg hover:bg-blue-700 transition-colors md:hidden"
+              className="fixed top-20 left-4 z-[60] bg-blue-600 dark:bg-blue-700 text-white p-3 rounded-xl shadow-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-300 md:hidden"
               aria-label="Toggle sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

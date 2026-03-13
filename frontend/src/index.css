@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import theme-specific styles */
+@import './styles/theme.css';
+
 /* Custom Utilities for Modern Sidebar */
 @layer utilities {
   .writing-mode-vertical-rl {

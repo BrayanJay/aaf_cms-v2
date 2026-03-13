@@ -174,12 +174,12 @@ const FileTable = ({fileDirectory, category}) => {
   }, [fetchFiles]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">{category}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-300">{category}</h2>
         <button
           onClick={handleUploadClick}
-          className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded transition-colors"
+          className="bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white px-4 py-2 rounded transition-colors duration-300"
         >
           + New Upload
         </button>
@@ -192,30 +192,30 @@ const FileTable = ({fileDirectory, category}) => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+          <thead className="bg-gray-50 dark:bg-gray-700 transition-colors duration-300">
             <tr>
-              <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File Name</th>
-              <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Path</th>
-              <th className="px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
-              <th className="px-4 py-3 border-b text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">File Name</th>
+              <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">Path</th>
+              <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">Last Updated</th>
+              <th className="px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider transition-colors duration-300">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-300">
             {files.map((file, idx) => (
-              <tr key={idx} className="hover:bg-gray-50">
-                <td className="px-4 py-4 text-sm text-gray-900 max-w-xs truncate">{file.fileName}</td>
-                <td className="px-4 py-4 text-sm text-gray-500 max-w-md truncate">{file.path}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{new Date(file.updatedAt).toLocaleString()}</td>
+              <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                <td className="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs truncate transition-colors duration-300">{file.fileName}</td>
+                <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-400 max-w-md truncate transition-colors duration-300">{file.path}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white transition-colors duration-300">{new Date(file.updatedAt).toLocaleString()}</td>
                 <td className="px-4 py-4 text-center">
                   <button
-                    className="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1 rounded mr-2 transition-colors text-sm"
+                    className="bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white px-3 py-1 rounded mr-2 transition-colors duration-300 text-sm"
                     onClick={() => handleUpdateClick(file)}
                   >
                     Update
                   </button>
                   <button
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition-colors text-sm"
+                    className="bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white px-3 py-1 rounded transition-colors duration-300 text-sm"
                     onClick={() => handleDelete(file.path)}
                   >
                     Delete
@@ -229,19 +229,19 @@ const FileTable = ({fileDirectory, category}) => {
 
       {files.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No files found in this directory.</p>
+          <p className="text-gray-500 dark:text-gray-400 transition-colors duration-300">No files found in this directory.</p>
         </div>
       )}
 
       {/* Update Modal */}
       {showUpdateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Update File</h3>
-            <p className="mb-4 text-gray-600">Current file: <span className="font-semibold text-gray-800">{fileToUpdate?.fileName}</span></p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md mx-4 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 transition-colors duration-300">Update File</h3>
+            <p className="mb-4 text-gray-600 dark:text-gray-300 transition-colors duration-300">Current file: <span className="font-semibold text-gray-800 dark:text-white transition-colors duration-300">{fileToUpdate?.fileName}</span></p>
             
             <div 
-              className={`border-2 border-dashed p-8 mb-6 text-center rounded-lg transition-colors ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50'}`}
+              className={`border-2 border-dashed p-8 mb-6 text-center rounded-lg transition-colors duration-300 ${isDragging ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'}`}
               onDragEnter={handleDragEnter}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -249,16 +249,16 @@ const FileTable = ({fileDirectory, category}) => {
             >
               {updateFile ? (
                 <div>
-                  <p className="text-green-600 font-semibold">File selected: {updateFile.name}</p>
-                  <p className="text-sm text-gray-500">({Math.round(updateFile.size / 1024)} KB)</p>
+                  <p className="text-green-600 dark:text-green-400 font-semibold transition-colors duration-300">File selected: {updateFile.name}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">({Math.round(updateFile.size / 1024)} KB)</p>
                 </div>
               ) : (
                 <div>
-                  <p className="mb-2 text-gray-600">Drag & drop your file here</p>
-                  <p className="text-sm text-gray-500 mb-3">or</p>
+                  <p className="mb-2 text-gray-600 dark:text-gray-300 transition-colors duration-300">Drag & drop your file here</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 transition-colors duration-300">or</p>
                   <button 
                     onClick={() => updateFileInputRef.current.click()}
-                    className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded transition-colors"
+                    className="bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white px-4 py-2 rounded transition-colors duration-300"
                   >
                     Choose File
                   </button>
@@ -275,13 +275,13 @@ const FileTable = ({fileDirectory, category}) => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={closeUpdateModal}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors duration-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateFileSubmit}
-                className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white rounded transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!updateFile}
               >
                 Update File
@@ -294,25 +294,25 @@ const FileTable = ({fileDirectory, category}) => {
       {/* Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-6">Upload New File</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md mx-4 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-6 transition-colors duration-300">Upload New File</h3>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300">
                 Select File
               </label>
-              <div className="border-2 border-dashed border-gray-300 bg-gray-50 p-6 text-center rounded-lg">
+              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 p-6 text-center rounded-lg transition-colors duration-300">
                 {newFile ? (
                   <div>
-                    <p className="text-green-600 font-semibold">File selected: {newFile.name}</p>
-                    <p className="text-sm text-gray-500">({Math.round(newFile.size / 1024)} KB)</p>
+                    <p className="text-green-600 dark:text-green-400 font-semibold transition-colors duration-300">File selected: {newFile.name}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">({Math.round(newFile.size / 1024)} KB)</p>
                   </div>
                 ) : (
                   <div>
-                    <p className="mb-3 text-gray-600">Choose a file to upload</p>
+                    <p className="mb-3 text-gray-600 dark:text-gray-300 transition-colors duration-300">Choose a file to upload</p>
                     <button 
                       onClick={() => fileInputRef.current.click()}
-                      className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded transition-colors"
+                      className="bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white px-4 py-2 rounded transition-colors duration-300"
                     >
                       Choose File
                     </button>
@@ -322,17 +322,17 @@ const FileTable = ({fileDirectory, category}) => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300">
                 File Name
               </label>
               <input
                 type="text"
                 value={customFileName}
                 onChange={(e) => setCustomFileName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-colors duration-300"
                 placeholder="Enter filename..."
               />
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 transition-colors duration-300">
                 The file will be saved in: media/attachments/{fileDirectory}
               </p>
             </div>
@@ -340,13 +340,13 @@ const FileTable = ({fileDirectory, category}) => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={closeUploadModal}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors duration-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUploadSubmit}
-                className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 text-white rounded transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!newFile || !customFileName.trim()}
               >
                 Upload File

@@ -9,25 +9,27 @@ function AboutPageContents() {
   const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/aboutpagecontents`
 
   const navigate = useNavigate()
-  const fetchUser = async () => {
-    try {
-      await axios.get(tokenUrl, {
-        withCredentials: true 
-      })
-    } catch(err){
-      navigate('/login')
-      console.log(err)
-    }
-  }
-
+  
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        await axios.get(tokenUrl, {
+          withCredentials: true 
+        })
+      } catch(err){
+        navigate('/login')
+        console.log(err)
+      }
+    }
+    
     fetchUser()
-  }, [])
+  }, [navigate, tokenUrl])
 
   return (
-    <div className="flex justify-center container py-20">
+    <div className="flex justify-center container py-20 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
       <div className="flex flex-col gap-10 w-full m-10 px-20">
-        <div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">About Page Banner</h2>
           <UploadCard
             label={`Carousel`}
             uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
@@ -49,7 +51,8 @@ function AboutPageContents() {
             ))
           }
         </div> */}
-        <div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">Profile Management</h2>
           <GetProfileDetails/>
         </div>
       </div>

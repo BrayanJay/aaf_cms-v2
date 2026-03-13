@@ -27,7 +27,7 @@ const Documents = () => {
   return (
     <div className="p-4 md:p-6 pt-20 md:pt-24">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-xl font-bold text-blue-900 mb-5">Documents</h1>
+        <h1 className="text-xl font-bold text-blue-900 dark:text-blue-400 mb-5 transition-colors duration-300">Documents</h1>
       <div>
         <FileTable fileDirectory="annualReports" category="Annual Reports"/>
       </div>

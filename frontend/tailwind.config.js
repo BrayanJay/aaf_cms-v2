@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class', // Enable class-based dark mode
   theme: {
     extend: {
       fontFamily: {
@@ -44,6 +45,29 @@ export default {
       colors: {
         'glass': 'rgba(255, 255, 255, 0.25)',
         'glass-dark': 'rgba(0, 0, 0, 0.25)',
+        // AAF Brand colors with dark mode variants
+        'aaf': {
+          'primary': '#1e40af', // Blue 700
+          'primary-dark': '#3b82f6', // Blue 500
+          'secondary': '#059669', // Emerald 600
+          'secondary-dark': '#10b981', // Emerald 500
+          'accent': '#dc2626', // Red 600
+          'accent-dark': '#ef4444', // Red 500
+        },
+        // Theme-aware background colors
+        'bg': {
+          'light': '#ffffff',
+          'light-secondary': '#f8fafc',
+          'dark': '#0f172a', // Slate 900
+          'dark-secondary': '#1e293b', // Slate 800
+        },
+        // Theme-aware text colors
+        'text': {
+          'light': '#1f2937', // Gray 800
+          'light-secondary': '#6b7280', // Gray 500
+          'dark': '#f1f5f9', // Slate 100
+          'dark-secondary': '#cbd5e1', // Slate 300
+        }
       }
     },
   },

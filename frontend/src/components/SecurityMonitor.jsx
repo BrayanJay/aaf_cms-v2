@@ -27,26 +27,26 @@ const SecurityMonitor = () => {
     <>
       {/* Session Warning Modal */}
       {sessionWarning && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black dark:bg-gray-900 bg-opacity-50 dark:bg-opacity-75 flex items-center justify-center z-50 p-4 transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 transition-colors duration-300">
             <div className="flex items-center mb-4">
               <div className="flex-shrink-0">
                 <FontAwesomeIcon 
                   icon={['fas', 'clock']} 
-                  className="text-yellow-500 text-2xl" 
+                  className="text-yellow-500 dark:text-yellow-400 text-2xl" 
                 />
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-medium text-gray-900">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white transition-colors duration-300">
                   Session Expiring Soon
                 </h3>
               </div>
             </div>
             
             <div className="mb-6">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-300">
                 Your session will expire in{' '}
-                <span className="font-semibold text-red-600">
+                <span className="font-semibold text-red-600 dark:text-red-400">
                   {formatTimeRemaining(timeUntilExpiry)}
                 </span>
                 . Would you like to extend your session?
@@ -56,13 +56,13 @@ const SecurityMonitor = () => {
             <div className="flex space-x-3">
               <button
                 onClick={extendSession}
-                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-300"
               >
                 Extend Session
               </button>
               <button
                 onClick={() => setDismissed(true)}
-                className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                className="flex-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md transition-colors duration-300"
               >
                 Dismiss
               </button>
@@ -92,13 +92,13 @@ const SecurityAlert = ({ alert }) => {
   const getAlertStyles = (type) => {
     switch (type) {
       case 'error':
-        return 'bg-red-100 border-red-500 text-red-700';
+        return 'bg-red-100 dark:bg-red-900/30 border-red-500 dark:border-red-600 text-red-700 dark:text-red-300';
       case 'warning':
-        return 'bg-yellow-100 border-yellow-500 text-yellow-700';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-500 dark:border-yellow-600 text-yellow-700 dark:text-yellow-300';
       case 'info':
-        return 'bg-blue-100 border-blue-500 text-blue-700';
+        return 'bg-blue-100 dark:bg-blue-900/30 border-blue-500 dark:border-blue-600 text-blue-700 dark:text-blue-300';
       default:
-        return 'bg-gray-100 border-gray-500 text-gray-700';
+        return 'bg-gray-100 dark:bg-gray-700 border-gray-500 dark:border-gray-600 text-gray-700 dark:text-gray-300';
     }
   };
 
@@ -142,7 +142,7 @@ const SecurityAlert = ({ alert }) => {
         <div className="ml-3">
           <button
             onClick={() => setVisible(false)}
-            className="text-current opacity-50 hover:opacity-75"
+            className="text-current opacity-50 hover:opacity-75 transition-opacity duration-300"
             aria-label="Dismiss alert"
           >
             <FontAwesomeIcon icon={['fas', 'times']} />

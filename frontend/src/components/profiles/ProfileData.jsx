@@ -91,19 +91,19 @@ const GetProfileDetails = () => {
 
 
   return (
-    <div className="p-4 md:p-6 pt-20 md:pt-24">
+    <div className="p-4 md:p-6 pt-20 md:pt-24 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Profile Management</h1>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 md:p-6 transition-colors duration-300">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-4 md:mb-6 transition-colors duration-300">Profile Management</h1>
           
           {/* Controls */}
-          <div className="bg-gray-50 p-3 md:p-4 rounded-lg mb-4 md:mb-6">
+          <div className="bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg mb-4 md:mb-6 transition-colors duration-300">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 md:gap-4">
               {/* Language Selection */}
               <div className="w-full sm:w-auto min-w-48">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Select Language</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">Select Language</label>
                 <select
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded px-3 py-2 focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-300"
                   onChange={(e) => setSelectedLang(e.target.value)}
                   value={selectedLang}
                 >
@@ -114,7 +114,7 @@ const GetProfileDetails = () => {
               </div>
 
               <Link to="/profiles/add" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto bg-blue-600 text-white px-3 md:px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium transition-colors">
+                <button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-3 md:px-4 py-2 rounded text-sm font-medium transition-colors duration-300">
                   + Add Profile
                 </button>
               </Link>
@@ -123,46 +123,46 @@ const GetProfileDetails = () => {
 
           {/* Board of Directors Section */}
           <div className="mb-6 md:mb-8">
-            <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 md:mb-4">Board of Directors</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-3 md:mb-4 transition-colors duration-300">Board of Directors</h2>
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transition-colors duration-300">
+                <thead className="bg-gray-50 dark:bg-gray-700 transition-colors duration-300">
                   <tr>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       ID
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Designation
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                       Description
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-300">
                   {bodData.length > 0 ? (
                     bodData.map((profile, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                      <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium transition-colors duration-300">
                           {profile.id}
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white transition-colors duration-300">
                           <div className="max-w-xs">
                             {selectedLang === 'en' ? profile.name_en : selectedLang === 'si' ? profile.name_si : profile.name_ta}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white transition-colors duration-300">
                           <div className="max-w-xs">
                             {selectedLang === 'en' ? profile.designation_en : selectedLang === 'si' ? profile.designation_si : profile.designation_ta}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 hidden md:table-cell">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white hidden md:table-cell transition-colors duration-300">
                           <div className="max-w-md max-h-32 overflow-y-auto">
                             {selectedLang === 'en' ? profile.description_en?.map((desc, i) => (
                               <div key={i} className="mb-1">
@@ -176,19 +176,19 @@ const GetProfileDetails = () => {
                               <div key={i} className="mb-1">
                                 <span className="text-sm leading-relaxed">{desc}</span>
                               </div>
-                            )) || <span className="text-gray-400 text-sm">No description available</span>}
+                            )) || <span className="text-gray-400 dark:text-gray-500 text-sm">No description available</span>}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                           <div className="flex items-center space-x-1 md:space-x-2">
                             <button 
-                              className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 md:px-3 py-1 rounded text-xs font-medium transition-colors" 
+                              className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white px-2 md:px-3 py-1 rounded text-xs font-medium transition-colors duration-300" 
                               onClick={() => handleUpdateClick(profile)}
                             >
                               Edit
                             </button>
                             <button 
-                              className="bg-red-500 hover:bg-red-600 text-white p-1 rounded text-xs transition-colors"
+                              className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white p-1 rounded text-xs transition-colors duration-300"
                               onClick={() => handleDeleteClick(profile.id, 'bod')}
                             > 
                               <Trash2 size={14} />
@@ -199,7 +199,7 @@ const GetProfileDetails = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan="5" className="px-4 py-8 text-center text-gray-500 dark:text-gray-400 transition-colors duration-300">
                         No data available
                       </td>
                     </tr>
@@ -211,46 +211,46 @@ const GetProfileDetails = () => {
 
           {/* Corporate Management Section */}
           <div className="mb-6 md:mb-8">
-            <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 md:mb-4">Corporate Management</h2>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-3 md:mb-4 transition-colors duration-300">Corporate Management</h2>
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transition-colors duration-300">
+                <thead className="bg-gray-50 dark:bg-gray-700 transition-colors duration-300">
                   <tr>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       ID
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Designation
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                       Description
                     </th>
-                    <th className="px-2 md:px-4 py-3 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 md:px-4 py-3 border-b border-gray-200 dark:border-gray-600 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 transition-colors duration-300">
                   {coopData.length > 0 ? (
                     coopData.map((profile, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                      <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
+                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium transition-colors duration-300">
                           {profile.id}
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white transition-colors duration-300">
                           <div className="max-w-xs">
                             {selectedLang === 'en' ? profile.name_en : selectedLang === 'si' ? profile.name_si : profile.name_ta}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white transition-colors duration-300">
                           <div className="max-w-xs">
                             {selectedLang === 'en' ? profile.designation_en : selectedLang === 'si' ? profile.designation_si : profile.designation_ta}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 hidden md:table-cell">
+                        <td className="px-2 md:px-4 py-3 md:py-4 text-sm text-gray-900 dark:text-white hidden md:table-cell transition-colors duration-300">
                           <div className="max-w-md max-h-32 overflow-y-auto">
                             {selectedLang === 'en' ? profile.description_en?.map((desc, i) => (
                               <div key={i} className="mb-1">
@@ -264,19 +264,19 @@ const GetProfileDetails = () => {
                               <div key={i} className="mb-1">
                                 <span className="text-sm leading-relaxed">{desc}</span>
                               </div>
-                            )) || <span className="text-gray-400 text-sm">No description available</span>}
+                            )) || <span className="text-gray-400 dark:text-gray-500 text-sm">No description available</span>}
                           </div>
                         </td>
-                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 md:px-4 py-3 md:py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                           <div className="flex items-center space-x-1 md:space-x-2">
                             <button 
-                              className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 md:px-3 py-1 rounded text-xs font-medium transition-colors" 
+                              className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-white px-2 md:px-3 py-1 rounded text-xs font-medium transition-colors duration-300" 
                               onClick={() => handleUpdateClick(profile)}
                             >
                               Edit
                             </button>
                             <button 
-                              className="bg-red-500 hover:bg-red-600 text-white p-1 rounded text-xs transition-colors"
+                              className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white p-1 rounded text-xs transition-colors duration-300"
                               onClick={() => handleDeleteClick(profile.id, 'coop')}
                             > 
                               <Trash2 size={14} />
@@ -287,7 +287,7 @@ const GetProfileDetails = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan="5" className="px-4 py-8 text-center text-gray-500 dark:text-gray-400 transition-colors duration-300">
                         No data available
                       </td>
                     </tr>

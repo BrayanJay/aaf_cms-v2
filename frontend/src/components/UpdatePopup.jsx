@@ -59,21 +59,21 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
   const languageMap = { en: "English", si: "Sinhala", ta: "Tamil" };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-semibold text-blue-800 mb-4">Update Description</h2>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 dark:bg-gray-950 bg-opacity-50 dark:bg-opacity-75 z-50 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 transition-colors duration-300">
+        <h2 className="text-xl font-semibold text-blue-800 dark:text-blue-400 mb-4 transition-colors duration-300">Update Description</h2>
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 dark:text-red-400 mb-4 transition-colors duration-300">{error}</p>}
 
         <form onSubmit={handleSubmit}>
-          <label className="block text-gray-700">Language:</label>
-          <p className="w-full p-2 border border-gray-300 rounded mt-1 bg-gray-100">
+          <label className="block text-gray-700 dark:text-gray-300 transition-colors duration-300">Language:</label>
+          <p className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded mt-1 transition-colors duration-300">
             {languageMap[lang] || "Unknown"}
           </p>
 
-          <label className="block text-gray-700 mt-3">New Description:</label>
+          <label className="block text-gray-700 dark:text-gray-300 mt-3 transition-colors duration-300">New Description:</label>
           <textarea
-            className="w-full p-2 border border-gray-300 rounded mt-1"
+            className="w-full p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded mt-1 transition-colors duration-300"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows="3"
@@ -82,14 +82,14 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
           <div className="flex justify-end space-x-3 mt-4">
             <button
               type="button"
-              className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md"
+              className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors duration-300"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className={`bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors duration-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={loading}
             >
               {loading ? "Updating..." : "Submit"}

@@ -99,7 +99,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
       <>
         {/* Backdrop */}
         <div 
-          className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+          className={`fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-40 transition-opacity duration-300 ${
             isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={onClose}
@@ -107,22 +107,22 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
         
         {/* Sidebar */}
         <div className={`
-          fixed top-0 left-0 h-full w-80 bg-white z-50 
-          shadow-2xl transition-transform duration-300 ease-out
+          fixed top-0 left-0 h-full w-80 bg-white dark:bg-gray-800 z-50 
+          shadow-2xl transition-all duration-300 ease-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
           <div className="h-full flex flex-col">
             {/* Header */}
-            <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+            <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 p-6 text-white transition-colors duration-300">
               <div className="absolute inset-0 bg-black/10 backdrop-blur-sm"></div>
               <div className="relative flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">Navigation</h2>
-                  <p className="text-blue-100 text-sm mt-1">Content Management</p>
+                  <p className="text-blue-100 dark:text-blue-200 text-sm mt-1 transition-colors duration-300">Content Management</p>
                 </div>
                 <button 
                   onClick={onClose}
-                  className="p-2 hover:bg-white/20 rounded-xl transition-colors duration-200"
+                  className="p-2 hover:bg-white/20 dark:hover:bg-white/30 rounded-xl transition-colors duration-200"
                   aria-label="Close sidebar"
                 >
                   <FontAwesomeIcon icon={['fas', 'times']} className="text-xl" />
@@ -131,34 +131,34 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
             </div>
 
             {/* User Profile Card */}
-            <div className="p-6 border-b border-gray-100">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700 transition-colors duration-300">
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg transition-colors duration-300">
                     <FontAwesomeIcon icon={['fas', 'user']} className="text-white text-xl" />
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-gray-800 animate-pulse transition-colors duration-300"></div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-900 truncate">{user?.username || 'User'}</h3>
-                  <p className="text-sm text-gray-500 capitalize">{user?.role || 'Unknown'}</p>
-                  <p className="text-xs text-green-600 font-medium mt-1">Active Session</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white truncate transition-colors duration-300">{user?.username || 'User'}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 capitalize transition-colors duration-300">{user?.role || 'Unknown'}</p>
+                  <p className="text-xs text-green-600 dark:text-green-400 font-medium mt-1 transition-colors duration-300">Active Session</p>
                 </div>
               </div>
             </div>
 
             {/* Time & Status */}
-            <div className="px-6 py-3 bg-gray-50 border-b border-gray-100">
+            <div className="px-6 py-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600 transition-colors duration-300">
               <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <FontAwesomeIcon icon={['fas', 'clock']} className="text-blue-500" />
+                <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300 transition-colors duration-300">
+                  <FontAwesomeIcon icon={['fas', 'clock']} className="text-blue-500 dark:text-blue-400 transition-colors duration-300" />
                   <span>{currentTime.toLocaleTimeString('en-US', { 
                     hour: '2-digit', 
                     minute: '2-digit' 
                   })}</span>
                 </div>
-                <div className="flex items-center space-x-1 text-green-600">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="flex items-center space-x-1 text-green-600 dark:text-green-400 transition-colors duration-300">
+                  <div className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full animate-pulse transition-colors duration-300"></div>
                   <span className="text-xs font-medium">Online</span>
                 </div>
               </div>
@@ -177,7 +177,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
                       group relative flex items-center p-4 rounded-2xl transition-all duration-200
                       ${isActive 
                         ? `bg-gradient-to-r ${item.color} text-white shadow-lg transform scale-[1.02]` 
-                        : 'hover:bg-gray-50 text-gray-700 hover:text-gray-900'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white'
                       }
                     `}
                   >
@@ -194,10 +194,10 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
                       />
                     </div>
                     <div className="ml-4 flex-1">
-                      <h4 className={`font-semibold text-sm ${isActive ? 'text-white' : 'text-gray-900'}`}>
+                      <h4 className={`font-semibold text-sm ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'} transition-colors duration-300`}>
                         {item.label}
                       </h4>
-                      <p className={`text-xs mt-0.5 ${isActive ? 'text-white/80' : 'text-gray-500'}`}>
+                      <p className={`text-xs mt-0.5 ${isActive ? 'text-white/80' : 'text-gray-500 dark:text-gray-400'} transition-colors duration-300`}>
                         {item.description}
                       </p>
                     </div>
@@ -210,7 +210,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
             </nav>
 
             {/* Logout Button */}
-            <div className="p-4 border-t border-gray-100">
+            <div className="p-4 border-t border-gray-100 dark:border-gray-600 transition-colors duration-300">
               <button 
                 onClick={handleLogOut}
                 className="w-full flex items-center p-4 rounded-2xl bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
@@ -235,19 +235,19 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
     <div className="fixed left-4 top-1/2 -translate-y-1/2 z-50 hidden md:block">
       <div className="flex flex-col items-center space-y-4">
         {/* Main Navigation Container */}
-        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-3 overflow-hidden">
+        <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/20 p-3 overflow-hidden transition-colors duration-300">
           {/* User Avatar */}
           <div className="group relative mb-4">
             <div className="relative">
-              <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:scale-105">
+              <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:scale-105">
                 <FontAwesomeIcon icon={['fas', 'user']} className="text-white text-xl" />
               </div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse shadow-sm"></div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-gray-800 animate-pulse shadow-sm transition-colors duration-300"></div>
             </div>
             
             {/* User Info Tooltip */}
             <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-              <div className="bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl min-w-max">
+              <div className="bg-gray-900 dark:bg-gray-700 text-white px-4 py-3 rounded-xl shadow-xl min-w-max transition-colors duration-300">
                 <div className="font-semibold text-sm">{user?.username || 'User'}</div>
                 <div className="text-xs text-gray-300 capitalize">{user?.role || 'Unknown'}</div>
                 <div className="text-xs text-green-400 mt-1 flex items-center">
@@ -255,7 +255,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
                   Active
                 </div>
                 {/* Arrow */}
-                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900 dark:border-r-gray-700 transition-colors duration-300"></div>
               </div>
             </div>
           </div>
@@ -271,7 +271,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
                       relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-md
                       ${isActive 
                         ? `bg-gradient-to-r ${item.color} text-white shadow-lg scale-105` 
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 hover:shadow-lg hover:scale-105'
+                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:shadow-lg hover:scale-105'
                       }
                     `}>
                       <FontAwesomeIcon 
@@ -285,11 +285,11 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
                     
                     {/* Navigation Tooltip */}
                     <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                      <div className="bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl min-w-max">
+                      <div className="bg-gray-900 dark:bg-gray-700 text-white px-4 py-3 rounded-xl shadow-xl min-w-max transition-colors duration-300">
                         <div className="font-semibold text-sm">{item.label}</div>
-                        <div className="text-xs text-gray-300">{item.description}</div>
+                        <div className="text-xs text-gray-300 dark:text-gray-400 transition-colors duration-300">{item.description}</div>
                         {/* Arrow */}
-                        <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900 dark:border-r-gray-700 transition-colors duration-300"></div>
                       </div>
                     </div>
                   </div>
@@ -299,7 +299,7 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
           </nav>
 
           {/* Divider */}
-          <div className="my-4 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+          <div className="my-4 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent transition-colors duration-300"></div>
 
           {/* Logout Button */}
           <button onClick={handleLogOut} className="w-full">
@@ -310,11 +310,11 @@ const RoleBasedSideBar = ({ isMobile = false, isOpen = false, onClose = null }) 
               
               {/* Logout Tooltip */}
               <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                <div className="bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl min-w-max">
+                <div className="bg-gray-900 dark:bg-gray-700 text-white px-4 py-3 rounded-xl shadow-xl min-w-max transition-colors duration-300">
                   <div className="font-semibold text-sm">Sign Out</div>
-                  <div className="text-xs text-gray-300">End your session</div>
+                  <div className="text-xs text-gray-300 dark:text-gray-400 transition-colors duration-300">End your session</div>
                   {/* Arrow */}
-                  <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
+                  <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900 dark:border-r-gray-700 transition-colors duration-300"></div>
                 </div>
               </div>
             </div>

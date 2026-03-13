@@ -27,16 +27,18 @@ import AddBranch from './components/AddBranch'
 import UserManagement from './pages/admin/UserManagement'
 import SystemLogs from './pages/admin/SystemLogs'
 import { AuthProvider } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 function App() {
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="min-h-screen bg-gray-50">
-          <Header/>
-          <SecurityMonitor />
-          <Routes>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+            <Header/>
+            <SecurityMonitor />
+            <Routes>
             {/*Routes without Sidebar*/}
             <Route path='/login' element={<Login />}></Route>
             <Route path='/unauthorized' element={<Unauthorized />}></Route>
@@ -172,6 +174,7 @@ function App() {
         </div>
       </BrowserRouter>
     </AuthProvider>
+  </ThemeProvider>
   )
 }
 
