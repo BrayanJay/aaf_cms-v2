@@ -144,8 +144,8 @@ const UploadCard = ({
     <div className="w-full max-w-2xl mx-auto">
       {/* Header */}
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-1">{label}</h3>
-        <p className="text-sm text-gray-500">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1 transition-colors duration-300">{label}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
           Maximum file size: {maxSizeMB} MB • Accepted: {acceptedTypes}
         </p>
       </div>
@@ -155,10 +155,10 @@ const UploadCard = ({
         className={`
           relative border-2 border-dashed rounded-xl p-8 transition-all duration-200 ease-in-out
           ${isDragOver 
-            ? 'border-blue-400 bg-blue-50' 
+            ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500' 
             : file 
-              ? 'border-green-400 bg-green-50' 
-              : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
+              ? 'border-green-400 bg-green-50 dark:bg-green-900/20 dark:border-green-500' 
+              : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600'
           }
         `}
         onDragOver={handleDragOver}
@@ -178,10 +178,10 @@ const UploadCard = ({
               
               {/* Upload Text */}
               <div className="mb-6">
-                <p className="text-lg font-medium text-gray-700 mb-2">
+                <p className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2 transition-colors duration-300">
                   Drop your file here or click to browse
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
                   Drag and drop your file or click the button below
                 </p>
               </div>
@@ -197,14 +197,14 @@ const UploadCard = ({
               
               {/* File Details */}
               <div className="mb-6">
-                <p className="text-lg font-medium text-gray-800 mb-1">{file.name}</p>
-                <p className="text-sm text-gray-500">{formatFileSize(file.size)}</p>
+                <p className="text-lg font-medium text-gray-800 dark:text-white mb-1 transition-colors duration-300">{file.name}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">{formatFileSize(file.size)}</p>
               </div>
               
               {/* Clear Button */}
               <button
                 onClick={handleClear}
-                className="absolute top-3 right-3 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors duration-200"
+                className="absolute top-3 right-3 p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors duration-200"
                 title="Remove file"
               >
                 <X className="w-5 h-5" />
@@ -226,10 +226,10 @@ const UploadCard = ({
       {/* Status Message */}
       {status && (
         <div className={`
-          mt-4 p-3 rounded-lg flex items-center gap-2
+          mt-4 p-3 rounded-lg flex items-center gap-2 transition-colors duration-300
           ${status.includes('successful') 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
-            : 'bg-red-50 border border-red-200 text-red-800'
+            ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200' 
+            : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200'
           }
         `}>
           {StatusIcon && <StatusIcon className="w-5 h-5 flex-shrink-0" />}
@@ -240,7 +240,7 @@ const UploadCard = ({
       {/* Action Buttons */}
       <div className="mt-6 flex flex-col sm:flex-row gap-3">
         {!file ? (
-          <label className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 cursor-pointer text-center transform hover:scale-105 active:scale-95">
+          <label className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 cursor-pointer text-center transform hover:scale-105 active:scale-95">
             <span className="flex items-center justify-center gap-2">
               <Upload className="w-5 h-5" />
               Choose File
@@ -261,8 +261,8 @@ const UploadCard = ({
               className={`
                 flex-1 font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95
                 ${loading
-                  ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white'
+                  ? 'bg-gray-400 dark:bg-gray-600 text-gray-200 dark:text-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 dark:from-green-500 dark:to-green-600 dark:hover:from-green-600 dark:hover:to-green-700 text-white'
                 }
               `}
             >
@@ -284,7 +284,7 @@ const UploadCard = ({
             <button
               onClick={handleClear}
               disabled={loading}
-              className="sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400"
+              className="sm:w-auto bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-3 px-6 rounded-lg transition-all duration-200 border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
             >
               <span className="flex items-center justify-center gap-2">
                 <X className="w-5 h-5" />

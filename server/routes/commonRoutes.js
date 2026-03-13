@@ -14,11 +14,25 @@ const allowedProducts = ['gold_loan', 'fixed_deposits', 'mortgage', 'leasing', '
 // Use memory storage with file size limits
 const upload = multer({ 
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB limit
+  limits: { fileSize: 15 * 1024 * 1024 } // 15 MB limit
 });
 
 // Upload Image API
-router.post("/upload", verifySessionToken, upload.single("file"), async (req, res) => {
+router.post("/upload", verifySessionToken, (req, res, next) => {
+  upload.single("file")(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({ 
+          message: "File too large. Maximum size allowed is 15MB." 
+        });
+      }
+      return res.status(400).json({ 
+        message: err.message || "File upload error" 
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }

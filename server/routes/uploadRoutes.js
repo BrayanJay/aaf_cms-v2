@@ -6,7 +6,7 @@ import { requireAuth, requirePermission } from "../middleware/authMiddleware.js"
 const router = express.Router();
 
 const memoryStorage = multer.memoryStorage();
-const limits = { fileSize: 5 * 1024 * 1024 }; // 5 MB
+const limits = { fileSize: 15 * 1024 * 1024 }; // 15 MB
 
 const documentUpload = multer({
   storage: memoryStorage,

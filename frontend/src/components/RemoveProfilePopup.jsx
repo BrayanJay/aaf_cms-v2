@@ -70,25 +70,25 @@ function RemoveProfilePopup({ isOpen, onClose, initialLang, id }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="block text-gray-700 mt-3">Are you sure?</h2>
-      <p className="text-gray-600">This action will clear the description.</p>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 dark:bg-gray-950 bg-opacity-50 dark:bg-opacity-75 z-50 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96 transition-colors duration-300">
+      <h2 className="block text-gray-700 dark:text-gray-300 mt-3 text-lg font-semibold transition-colors duration-300">Are you sure?</h2>
+      <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">This action will clear the description.</p>
 
-        {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
+        {error && <p className="text-red-500 dark:text-red-400 mb-4 transition-colors duration-300">{error}</p>} {/* Display error message */}
 
         <form onSubmit={handleSubmit}>
           <div className="flex justify-end space-x-3 mt-4">
             <button
               type="button"
-              className="bg-gray-400 hover:bg-gray-500 text-white px-3 py-1 rounded-md"
+              className="bg-gray-400 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700 text-white px-4 py-2 rounded-md transition-colors duration-300"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className={`bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors duration-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={loading}
             >
               {loading ? "Removing..." : "Confirm"}

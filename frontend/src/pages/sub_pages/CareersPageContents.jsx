@@ -8,28 +8,27 @@ function CareersPageContents() {
     
 const navigate = useNavigate();
 
-  // const navigate = useNavigate()
-  const fetchUser = async () => {
-    try {
-      await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/careerspagecontents`, {
-        withCredentials: true,
-      })
-    } catch(err){
-      navigate('/login')
-      console.log(err)
-    }
-  }
-
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/careerspagecontents`, {
+          withCredentials: true,
+        })
+      } catch(err){
+        navigate('/login')
+        console.log(err)
+      }
+    }
+    
     fetchUser()
-  }, [])
+  }, [navigate])
 
   return (
-    <div className="flex justify-center container py-20">
+    <div className="flex justify-center container py-20 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
       <div className="w-full m-10 px-20">
 
-        <div className="flex flex-col gap-3 w-full py-10">
-          <h1 className="text-blue-800 font-semibold text-xl">Careers Page Banner</h1>
+        <div className="flex flex-col gap-3 w-full py-10 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
+          <h1 className="text-blue-800 dark:text-blue-400 font-semibold text-xl transition-colors duration-300">Careers Page Banner</h1>
           <UploadCard
             label="Carousel Image"
             uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}

@@ -186,16 +186,16 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto transition-colors duration-300">
         {/* Header */}
-        <div className="border-b border-gray-200 p-6">
-          <h2 className="text-xl font-bold text-gray-800">Edit Branch Information</h2>
-          <p className="text-sm text-gray-600 mt-1">Update branch details and media</p>
+        <div className="border-b border-gray-200 dark:border-gray-600 p-6 transition-colors duration-300">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-300">Edit Branch Information</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 transition-colors duration-300">Update branch details and media</p>
         </div>
         
         {error && (
-          <div className="mx-6 mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-700 text-sm">{error}</p>
+          <div className="mx-6 mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md transition-colors duration-300">
+            <p className="text-red-700 dark:text-red-300 text-sm transition-colors duration-300">{error}</p>
           </div>
         )}
 
@@ -203,7 +203,7 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
         <div className="p-6 space-y-8">
           {/* Media Upload Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Branch Media</h3>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-600 pb-2 transition-colors duration-300">Branch Media</h3>
             <UploadCard
               label="Branch Image"
               uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
@@ -218,15 +218,15 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
           {/* Form Section */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Branch Information</h3>
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white border-b border-gray-200 dark:border-gray-600 pb-2 transition-colors duration-300">Branch Information</h3>
               
               {/* Region Selection */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Region</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Region</label>
                 <select
                   value={regionId}
                   onChange={(e) => setRegionId(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   required
                 >
                   <option value="">Select Region</option>
@@ -241,36 +241,36 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               {/* Branch Names */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Branch Name (English)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Branch Name (English)</label>
                   <input
                     type="text"
                     value={branchNameEn}
                     onChange={(e) => setBranchNameEn(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                     placeholder="Enter branch name in English"
                     required
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Branch Name (Sinhala)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Branch Name (Sinhala)</label>
                   <input
                     type="text"
                     value={branchNameSi}
                     onChange={(e) => setBranchNameSi(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                     placeholder="සිංහල නම"
                     required
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Branch Name (Tamil)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Branch Name (Tamil)</label>
                   <input
                     type="text"
                     value={branchNameTa}
                     onChange={(e) => setBranchNameTa(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                     placeholder="தமிழ் பெயர்"
                     required
                   />
@@ -280,11 +280,11 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               {/* Addresses */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Address (English)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Address (English)</label>
                   <textarea
                     value={branchAddressEn}
                     onChange={(e) => setBranchAddressEn(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="Enter complete address in English"
                     rows="2"
                     required
@@ -292,11 +292,11 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Address (Sinhala)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Address (Sinhala)</label>
                   <textarea
                     value={branchAddressSi}
                     onChange={(e) => setBranchAddressSi(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="සිංහල ලිපිනය"
                     rows="2"
                     required
@@ -304,11 +304,11 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Address (Tamil)</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Address (Tamil)</label>
                   <textarea
                     value={branchAddressTa}
                     onChange={(e) => setBranchAddressTa(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="தமிழ் முகவரி"
                     rows="2"
                     required
@@ -319,24 +319,24 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               {/* Contact Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Contact Number</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Contact Number</label>
                   <input
                     type="text"
                     value={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="0712345678"
                     required
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Email</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="branch@aaf.lk"
                     required
                   />
@@ -346,24 +346,24 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               {/* Coordinates */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Latitude</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Latitude</label>
                   <input
                     type="text"
                     value={coordinatesLatitude}
                     onChange={(e) => setCoordinatesLatitude(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="6.1234567"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">Longitude</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300">Longitude</label>
                   <input
                     type="text"
                     value={coordinatesLongitude}
                     onChange={(e) => setCoordinatesLongitude(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                     placeholder="80.1234567"
                     required
                   />
@@ -374,12 +374,12 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 p-6">
+        <div className="border-t border-gray-200 dark:border-gray-600 p-6 transition-colors duration-300">
           <div className="flex flex-wrap gap-3 justify-between">
             <button
               type="button"
               onClick={handleDelete}
-              className={`px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={isDeleting || loading}
             >
               {isDeleting ? "Deleting..." : "Delete Branch"}
@@ -389,7 +389,7 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 disabled={loading || isDeleting}
               >
                 Cancel
@@ -397,7 +397,7 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className={`px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading || isDeleting}
               >
                 {loading ? "Updating..." : "Update Branch"}

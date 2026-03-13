@@ -27,12 +27,6 @@ export async function handleFileUpload(req, res, baseDirectory) {
     const directoryFromClient = req.body.directory;
     const effectiveDirectory = directoryFromClient || baseDirectory || "media/uploads";
 
-    console.log("Upload Debug Info:");
-    console.log("- directoryFromClient:", directoryFromClient);
-    console.log("- baseDirectory:", baseDirectory);
-    console.log("- effectiveDirectory:", effectiveDirectory);
-    console.log("- customFilename:", customFilename);
-
     const absoluteBaseDir = path.resolve(__dirname, "..", effectiveDirectory);
     const filePath = path.join(absoluteBaseDir, safeFilename);
 
