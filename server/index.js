@@ -20,16 +20,30 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 
+const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5174';
+const websiteOrigin  = process.env.WEBSITE_ORIGIN  || 'http://localhost:5173';
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'https://localhost:5173',
-    'https://localhost:5174'
-  ],  // your frontend origin
-  credentials: true,               // important for session cookies
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. curl, mobile apps, server-to-server)
+    if (!origin || origin === frontendOrigin || origin === websiteOrigin) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin '${origin}' not allowed`));
+    }
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }))
+
+// Block non-GET requests from WEBSITE_ORIGIN
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin === websiteOrigin && req.method !== 'GET') {
+    return res.status(403).json({ error: 'Method not allowed for this origin' });
+  }
+  next();
+})
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
