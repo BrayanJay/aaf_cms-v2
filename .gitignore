@@ -8,6 +8,7 @@
 
 # Ignore build or dist folders (if any)
 /frontend/build
+/frontend/dist
 /server/dist
 
 # Ignore log files
