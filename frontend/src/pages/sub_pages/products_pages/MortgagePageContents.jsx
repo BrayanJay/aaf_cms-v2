@@ -14,7 +14,7 @@ function MortgagePageContents() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/mortgagepagecontents`, {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
           withCredentials: true,
         })
       } catch(err){
@@ -62,7 +62,7 @@ function MortgagePageContents() {
             <div className="max-w-2xl">
               <UploadCard
                 label="Mortgage Banner Image"
-                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
                 acceptedTypes="image/png,image/webp"
                 maxSizeMB={1}
                 customFileName="mortgagePgBanner.webp"

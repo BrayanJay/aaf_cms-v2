@@ -13,13 +13,13 @@ export const AuthProvider = ({ children }) => {
   // Check if user is authenticated and get user info
   const checkAuth = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users/me`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
         credentials: 'include'
       });
       
       if (response.ok) {
         const data = await response.json();
-        setUser(data.data);
+        setUser(data);
       } else {
         setUser(null);
       }

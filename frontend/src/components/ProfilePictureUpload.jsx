@@ -42,7 +42,7 @@ const ProfilePictureUpload = ({tokenUrl, id}) => {
         formData.append("file_directory", "media/aboutPage/profiles"); // ../../../../asiaassetfinance/src/media/aboutPage/profiles/
       
         try {
-          const response = await axios.post("http://localhost:3000/data/upload", formData, {
+          const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/data/files`, formData, {
             withCredentials: true,
             headers: {
               "Content-Type": "multipart/form-data",

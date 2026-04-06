@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Image, Settings, Upload, Eye } from "lucide-react";
+import { Eye, Image, Upload } from "lucide-react";
 import PopupToggle from "../../components/PopupToggle";
 import UploadCard from "../../components/UploadCard";
 
@@ -9,7 +9,7 @@ function LandingPageContents() {
 
   const carousels = [1, 2, 3];
 
-  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/landingpagecontents`;
+  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`;
 
   const navigate = useNavigate()
   
@@ -76,7 +76,7 @@ function LandingPageContents() {
                     </div>
                     <UploadCard
                       label={`Carousel Banner ${index}`}
-                      uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+                      uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
                       acceptedTypes="image/webp"
                       maxSizeMB={2}
                       customFileName={`bannerimg${index}.webp`}
@@ -107,70 +107,8 @@ function LandingPageContents() {
         </div>
 
         {/* Popup Management Section */}
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-200 px-6 py-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <Settings className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Popup Management</h2>
-                  <p className="text-sm text-gray-600">Control popup display and upload popup content</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <PopupToggle />
-            </div>
-          </div>
+        <PopupToggle />
 
-          {/* Popup Media Section */}
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-200 px-6 py-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <Image className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Popup Media</h2>
-                  <p className="text-sm text-gray-600">Upload and manage popup banner image</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <div className="max-w-2xl">
-                <UploadCard
-                  label="Popup Banner Image"
-                  uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
-                  acceptedTypes="image/png,image/webp"
-                  maxSizeMB={1}
-                  customFileName="popup.webp"
-                  customDirectory="media/uploads"
-                  onUploadSuccess={(data) => console.log("Uploaded!", data)}
-                />
-              </div>
-              
-              {/* Info Card */}
-              <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <Upload className="w-5 h-5 text-green-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-green-900 mb-1">Popup Image Guidelines</h4>
-                    <ul className="text-sm text-green-700 space-y-1">
-                      <li>• Recommended resolution: 800x600 pixels or 4:3 aspect ratio</li>
-                      <li>• Supported formats: PNG or WebP</li>
-                      <li>• Maximum file size: 1MB</li>
-                      <li>• Image will be displayed as a modal popup on the homepage</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

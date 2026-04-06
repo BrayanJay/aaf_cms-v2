@@ -24,7 +24,7 @@ const AddProfile = () => {
     const [createdProfileId, setCreatedProfileId] = useState(null);
     const [imageUploaded, setImageUploaded] = useState(false);
 
-    const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/aboutpagecontents`;
+    const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`;
     const navigate = useNavigate();
 
     // Fetch user authentication
@@ -74,13 +74,13 @@ const AddProfile = () => {
 
       console.log("Sending profile data:", profileData);
 
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/profile/addProfile`, 
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/profile`,
         profileData, 
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
 
       // Get the created profile ID from response
-      const createdProfileId = response.data.profileId || response.data.id || response.data.data?.id;
+      const createdProfileId = response.data.id;
       console.log("Profile created successfully with ID:", createdProfileId);
 
       // Store this ID in state for immediate use
@@ -469,7 +469,7 @@ const handleReset = async (e) => {
               </h3>
               <UploadCard
                 label={`Profile Picture (ID: ${createdProfileId})`}
-                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
                 acceptedTypes="image/webp"
                 maxSizeMB={2}
                 customFileName={`${createdProfileId}.webp`}

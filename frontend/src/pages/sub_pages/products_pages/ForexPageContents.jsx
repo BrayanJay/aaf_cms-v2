@@ -13,7 +13,7 @@ function ForexPageContents() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/forexpagecontents`, {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
           withCredentials: true,
         })
       } catch(err){
@@ -36,7 +36,7 @@ function ForexPageContents() {
             <h2 className="text-lg font-semibold text-gray-800 mb-4">Page Banner</h2>
             <UploadCard
               label="Carousel Image"
-              uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+              uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
               acceptedTypes="image/png,image/webp"
               maxSizeMB={1}
               customFileName="fePgBanner.webp"
@@ -49,7 +49,7 @@ function ForexPageContents() {
           <div className="mb-8">
             <ProductDescription 
               table_name={table_name} 
-              tokenUrl={`${import.meta.env.VITE_API_BASE_URL}/auth/forexpagecontents`}
+              tokenUrl={`${import.meta.env.VITE_API_BASE_URL}/auth/me`}
             />
           </div>
 

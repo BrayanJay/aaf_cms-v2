@@ -8,7 +8,7 @@ function ProductsPageContents() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/productspagecontents`, {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
           withCredentials: true,
         })
       } catch(err){

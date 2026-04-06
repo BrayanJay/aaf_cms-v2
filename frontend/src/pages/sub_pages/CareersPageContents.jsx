@@ -11,7 +11,7 @@ const navigate = useNavigate();
   // const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/careerspagecontents`, {
+      await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
         withCredentials: true,
       })
     } catch(err){
@@ -32,7 +32,7 @@ const navigate = useNavigate();
           <h1 className="text-blue-800 font-semibold text-xl">Careers Page Banner</h1>
           <UploadCard
             label="Carousel Image"
-            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
             acceptedTypes="image/png,image/webp"
             maxSizeMB={1}
             customFileName="careersPgBanner.webp"

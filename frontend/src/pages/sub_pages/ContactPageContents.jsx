@@ -8,7 +8,7 @@ function ContactPageContents() {
   const navigate = useNavigate()
   const fetchUser = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/contactpagecontents`, {
+      await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
         withCredentials: true,
       })
     } catch(err){
@@ -29,7 +29,7 @@ function ContactPageContents() {
           <h1 className="text-blue-800 font-semibold text-xl">Contacts Page Main Image</h1>
           <UploadCard
             label="Side Image"
-            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
             acceptedTypes="image/png,image/webp"
             maxSizeMB={1}
             customFileName="sideImage.webp"

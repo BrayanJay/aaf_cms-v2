@@ -14,7 +14,7 @@ const ProductDescription = ({table_name, tokenUrl}) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/product/read/${table_name}`);
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/product/${table_name}`);
             setData(Array.isArray(res.data) ? res.data : []);
           } catch (err) {
             console.log("Error fetching data:", err.message);

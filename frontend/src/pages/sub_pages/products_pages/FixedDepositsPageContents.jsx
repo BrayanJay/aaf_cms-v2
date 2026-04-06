@@ -15,7 +15,7 @@ function FixedDepositsPageContents() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/fixeddepositspagecontents`, {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
           withCredentials: true,
         })
       } catch(err){
@@ -63,7 +63,7 @@ function FixedDepositsPageContents() {
             <div className="max-w-2xl">
               <UploadCard
                 label="Fixed Deposits Banner Image"
-                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+                uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
                 acceptedTypes="image/png,image/webp"
                 maxSizeMB={1}
                 customFileName="fdPgBanner.webp"

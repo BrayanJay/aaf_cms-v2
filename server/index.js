@@ -20,8 +20,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 
-const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5174';
-const websiteOrigin  = process.env.WEBSITE_ORIGIN  || 'http://localhost:5173';
+const frontendOrigin = process.env.CMS_FRONTEND_ORIGINS;
+const websiteOrigin  = process.env.WEBSITE_FRONTEND_ORIGINS;
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -72,7 +72,7 @@ app.use('/data', commonRoutes)
 app.use('/branch', branchRoutes)
 app.use('/product', productRoutes)
 app.use('/profile', profileRoutes)
-app.use('/fileUpload', uploadRoutes) // Assuming you have uploadRoutes defined
+app.use('/uploads', uploadRoutes)
 app.use('/logs', loggerRoutes) // Add logger routes
 app.use('/users', userRoutes) // Add user management routes
 app.use('/sessions', sessionRoutes) // Add session monitoring routes

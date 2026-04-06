@@ -14,7 +14,7 @@ const Dashboard = () => {
     const fetchBranchStats = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/branch/branches/stats/regions`,
+          `${import.meta.env.VITE_API_BASE_URL}/branch/branches/stats`,
           { withCredentials: true }
         );
         

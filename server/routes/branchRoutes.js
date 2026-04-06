@@ -5,33 +5,13 @@ import 'dotenv/config';
 
 const router = express.Router();
 
-// Get all branch data
-router.get("/branches/all", async (req, res) => {
-  let db;
-  try {
-    db = await connectToDatabase();
+const VALID_LANGS = ['en', 'si', 'ta'];
 
-    const [branches] = await db.query("SELECT * FROM branch_data ORDER BY id ASC");
+// Get branches — supports ?lang=en|si|ta and/or ?region_id=1
+router.get("/branches", async (req, res) => {
+  const { lang, region_id } = req.query;
 
-    if (branches.length === 0) {
-      return res.status(404).json({ message: "No branches found." });
-    }
-
-    res.json(branches);
-
-  } catch (e) {
-    console.error("Error fetching all branches:", e.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  } finally {
-    if (db) await db.release();
-  }
-});
-
-// Get branches by language (for language-specific display)
-router.get("/branches/lang/:lang", async (req, res) => {
-  const { lang } = req.params;
-
-  if (!['en', 'si', 'ta'].includes(lang)) {
+  if (lang && !VALID_LANGS.includes(lang)) {
     return res.status(400).json({ message: "Invalid language. Use 'en', 'si', or 'ta'." });
   }
 
@@ -39,25 +19,30 @@ router.get("/branches/lang/:lang", async (req, res) => {
   try {
     db = await connectToDatabase();
 
-    const query = `
-      SELECT 
-        id,
-        region_id,
-        branch_name_en,
-        branch_name_${lang} as branch_name,
-        branch_address_${lang} as branch_address,
-        region_name_${lang} as region_name,
-        contact_number,
-        email,
-        coordinates_longitude,
-        coordinates_latitude,
-        last_updated_time,
-        last_updated_by
-      FROM branch_data 
-      ORDER BY id ASC
-    `;
+    const conditions = [];
+    const params = [];
 
-    const [branches] = await db.query(query);
+    if (region_id) {
+      conditions.push("region_id = ?");
+      params.push(region_id);
+    }
+
+    const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+
+    const selectFields = lang
+      ? `id, region_id, branch_name_en,
+         branch_name_${lang} as branch_name,
+         branch_address_${lang} as branch_address,
+         region_name_${lang} as region_name,
+         contact_number, email,
+         coordinates_longitude, coordinates_latitude,
+         last_updated_time, last_updated_by`
+      : "*";
+
+    const [branches] = await db.query(
+      `SELECT ${selectFields} FROM branch_data ${where} ORDER BY id ASC`,
+      params
+    );
 
     if (branches.length === 0) {
       return res.status(404).json({ message: "No branches found." });
@@ -66,31 +51,33 @@ router.get("/branches/lang/:lang", async (req, res) => {
     res.json(branches);
 
   } catch (e) {
-    console.error("Error fetching branches by language:", e.message);
+    console.error("Error fetching branches:", e.message);
     res.status(500).json({ message: "Internal Server Error" });
   } finally {
     if (db) await db.release();
   }
 });
 
-// Get branches by region
-router.get("/branches/region/:region_id", async (req, res) => {
-  const { region_id } = req.params;
-
+// Get region statistics
+router.get("/branches/stats", async (req, res) => {
   let db;
   try {
     db = await connectToDatabase();
 
-    const [branches] = await db.query("SELECT * FROM branch_data WHERE region_id = ? ORDER BY id ASC", [region_id]);
+    const [stats] = await db.query(`
+      SELECT
+        region_id,
+        region_name_en,
+        COUNT(*) as branch_count
+      FROM branch_data
+      GROUP BY region_id, region_name_en
+      ORDER BY region_id ASC
+    `);
 
-    if (branches.length === 0) {
-      return res.status(404).json({ message: "No branches found for this region." });
-    }
-
-    res.json(branches);
+    res.json(stats);
 
   } catch (e) {
-    console.error("Error fetching branches by region:", e.message);
+    console.error("Error fetching region statistics:", e.message);
     res.status(500).json({ message: "Internal Server Error" });
   } finally {
     if (db) await db.release();
@@ -98,7 +85,7 @@ router.get("/branches/region/:region_id", async (req, res) => {
 });
 
 // Get single branch by ID
-router.get("/branches/details/:id", async (req, res) => {
+router.get("/branches/:id", async (req, res) => {
   const { id } = req.params;
 
   let db;
@@ -115,32 +102,6 @@ router.get("/branches/details/:id", async (req, res) => {
 
   } catch (e) {
     console.error("Error fetching branch details:", e.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  } finally {
-    if (db) await db.release();
-  }
-});
-
-// Get region statistics
-router.get("/branches/stats/regions", async (req, res) => {
-  let db;
-  try {
-    db = await connectToDatabase();
-
-    const [stats] = await db.query(`
-      SELECT 
-        region_id,
-        region_name_en,
-        COUNT(*) as branch_count
-      FROM branch_data 
-      GROUP BY region_id, region_name_en
-      ORDER BY region_id ASC
-    `);
-
-    res.json(stats);
-
-  } catch (e) {
-    console.error("Error fetching region statistics:", e.message);
     res.status(500).json({ message: "Internal Server Error" });
   } finally {
     if (db) await db.release();

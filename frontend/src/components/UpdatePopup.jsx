@@ -38,7 +38,7 @@ function UpdatePopup({ isOpen, onClose, initialLang, initialDescription, table_n
     setError("");
 
     try {
-      const res = await axios.put(`http://localhost:3000/product/update/${table_name}`, 
+      const res = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/product/${table_name}`,
         { description, lang }, 
         { withCredentials: true }
       );

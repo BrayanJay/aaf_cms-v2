@@ -23,14 +23,14 @@ const BranchNetwork = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/branchdetails`;
+  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`;
   const navigate = useNavigate();
 
   // Fetch branches data
   const fetchBranches = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/branch/branches/lang/${selectedLang}`,
+        `${import.meta.env.VITE_API_BASE_URL}/branch/branches?lang=${selectedLang}`,
         { withCredentials: true }
       );
       setBranches(response.data);
@@ -57,7 +57,7 @@ const BranchNetwork = () => {
   const fetchRegionStats = useCallback(async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/branch/branches/stats/regions`,
+        `${import.meta.env.VITE_API_BASE_URL}/branch/branches/stats`,
         { withCredentials: true }
       );
       setRegionStats(response.data);
@@ -156,7 +156,7 @@ const BranchNetwork = () => {
 
       // Refresh the branches list
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/branch/branches/lang/${selectedLang}`,
+        `${import.meta.env.VITE_API_BASE_URL}/branch/branches?lang=${selectedLang}`,
         { withCredentials: true }
       );
       setBranches(response.data);
@@ -458,7 +458,7 @@ const BranchNetwork = () => {
               const fetchBranches = async () => {
                 try {
                   const response = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/branch/branches/lang/${selectedLang}`,
+                    `${import.meta.env.VITE_API_BASE_URL}/branch/branches?lang=${selectedLang}`,
                     { withCredentials: true }
                   );
                   setBranches(response.data);

@@ -6,7 +6,7 @@ import GetProfileDetails from "../../components/profiles/ProfileData";
 
 function AboutPageContents() {
 
-  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/aboutpagecontents`
+  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`
 
   const navigate = useNavigate()
   const fetchUser = async () => {
@@ -30,7 +30,7 @@ function AboutPageContents() {
         <div>
           <UploadCard
             label={`Carousel`}
-            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
             acceptedTypes="image/webp"
             maxSizeMB={2}
             customFileName={`bannerAbout.webp`}

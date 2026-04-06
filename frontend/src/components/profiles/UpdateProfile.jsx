@@ -63,8 +63,8 @@ function UpdateProfile ({ isOpen, onClose, id, initialName, initialType, initial
     setError("");
 
     try {
-      const res = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/profile/updateProfile`,
-        { id: id, lang: lang, type: type, name: name, designation: designation, description: cleanedDescription }, 
+      const res = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/profile/${id}`,
+        { lang, type, name, designation, description: cleanedDescription },
         { withCredentials: true, headers: { "Content-Type": "application/json" } }
         
       );
@@ -117,7 +117,7 @@ function UpdateProfile ({ isOpen, onClose, id, initialName, initialType, initial
         <div className="mb-4">
             <UploadCard
             label={`Profile Picture`}
-            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+            uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
             acceptedTypes="image/webp"
             maxSizeMB={2}
             customFileName={`${id}.webp`}

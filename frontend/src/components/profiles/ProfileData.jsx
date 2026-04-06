@@ -14,7 +14,7 @@ const GetProfileDetails = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
 
-  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/aboutpagecontents`;
+  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const GetProfileDetails = () => {
 
         const fetchBODData = async () => {
           try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/profile/getProfiles/bod`);
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/profile?type=bod`);
             const updatedData = res.data.map(profile => ({
               ...profile,
               // No need to parse here since backend already returns parsed arrays
@@ -45,7 +45,7 @@ const GetProfileDetails = () => {
 
         const fetchCOOPData = async () => {
           try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/profile/getProfiles/coop`);
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/profile?type=coop`);
             const updatedData = res.data.map(profile => ({
               ...profile,
               // No need to parse here since backend already returns parsed arrays
@@ -69,9 +69,9 @@ const GetProfileDetails = () => {
   const handleDeleteClick = async (profileId, profileType) => {
     if (window.confirm("Are you sure you want to delete this profile?")) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/profile/deleteProfile`, {
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/profile/${profileId}`, {
           withCredentials: true,
-          data: { id: profileId, type: profileType }
+          data: { type: profileType }
         });
         
         // Refresh the data after deletion

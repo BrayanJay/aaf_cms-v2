@@ -16,7 +16,7 @@ const FileTable = ({fileDirectory, category}) => {
 
   const fetchFiles = useCallback(async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/data/getFiles?folder=media/attachments/${fileDirectory}`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/data/files?folder=media/attachments/${fileDirectory}`, {
       });
       setFiles(response.data);
     } catch (err) {
@@ -28,7 +28,7 @@ const FileTable = ({fileDirectory, category}) => {
   const handleDelete = async (filePath) => {
     if (!window.confirm("Are you sure you want to delete this file?")) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/data/delete-file`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/data/files`, {
         withCredentials: true,
         data: { path: filePath },
       });
@@ -67,7 +67,7 @@ const FileTable = ({fileDirectory, category}) => {
       formData.append("filename", customFileName);
       formData.append("file_directory", `media/attachments/${fileDirectory}`);
 
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/data/upload`, formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/data/files`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -115,7 +115,7 @@ const FileTable = ({fileDirectory, category}) => {
       formData.append("filename", fileToUpdate.fileName); // Keep the same filename
       formData.append("file_directory", `media/attachments/${fileDirectory}`); // Use fileDirectory parameter
 
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/data/upload`, formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/data/files`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

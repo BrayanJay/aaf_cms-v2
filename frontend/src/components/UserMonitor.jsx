@@ -14,7 +14,7 @@ const UserMonitor = () => {
 
   const fetchActiveUsers = async () => {
     try {
-      const response = await fetch('/api/sessions/active', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/sessions`, {
         credentials: 'include'
       });
       
@@ -56,8 +56,8 @@ const UserMonitor = () => {
     }
     
     try {
-      const response = await fetch(`/api/sessions/force-logout/${userId}`, {
-        method: 'POST',
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/sessions/${userId}`, {
+        method: 'DELETE',
         credentials: 'include'
       });
       

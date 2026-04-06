@@ -49,7 +49,7 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
       const fetchFullBranchData = async () => {
         try {
           const response = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/branch/branches/details/${branch.id}`,
+            `${import.meta.env.VITE_API_BASE_URL}/branch/branches/${branch.id}`,
             { withCredentials: true }
           );
           const fullBranch = response.data;
@@ -206,7 +206,7 @@ function UpdateBranchPopup({ isOpen, onClose, branch, tokenUrl, onUpdate }) {
             <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Branch Media</h3>
             <UploadCard
               label="Branch Image"
-              uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+              uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
               acceptedTypes="image/png,image/webp"
               maxSizeMB={1}
               customFileName={`${branchNameEn.toLowerCase().replace(/\s+/g, '').replace(/_+/g, '')}.webp`}

@@ -30,7 +30,7 @@ const AddBranch = () => {
   const [loading, setLoading] = useState(false);
   const [imageUploaded, setImageUploaded] = useState(false);
 
-  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/branchdetails`;
+  const tokenUrl = `${import.meta.env.VITE_API_BASE_URL}/auth/me`;
   const navigate = useNavigate();
 
   // Region options
@@ -401,7 +401,7 @@ const AddBranch = () => {
               <div className="max-w-2xl">
                 <UploadCard
                   label="Branch Image"
-                  uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/fileUpload/upload/image`}
+                  uploadUrl={`${import.meta.env.VITE_API_BASE_URL}/uploads/images`}
                   acceptedTypes="image/png,image/webp"
                   maxSizeMB={1}
                   customFileName={`${branchNameEn.toLowerCase().replace(/\s+/g, '').replace(/_+/g, '')}.webp`}

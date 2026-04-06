@@ -15,7 +15,7 @@ function RemovePopup({ isOpen, onClose, initialLang, table_name }) {
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/auth/goldloanpagecontents", {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
         headers: {
           "Authorization": `Bearer ${token}`,
         },

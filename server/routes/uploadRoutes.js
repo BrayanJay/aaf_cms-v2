@@ -34,20 +34,22 @@ const imageUpload = multer({
   }
 });
 
+// Upload document
 router.post(
-  "/upload/document",
+  "/documents",
   requireAuth,
   requirePermission('files', 'upload'),
   documentUpload.single("file"),
   (req, res) => handleFileUpload(req, res, "media/documents")
 );
 
+// Upload image
 router.post(
-  "/upload/image",
+  "/images",
   requireAuth,
   requirePermission('files', 'upload'),
   imageUpload.single("file"),
-  (req, res) => handleFileUpload(req, res, null) // Allow full control via client directory parameter
+  (req, res) => handleFileUpload(req, res, null)
 );
 
 export default router;
